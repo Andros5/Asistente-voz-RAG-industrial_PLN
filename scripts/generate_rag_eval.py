@@ -9,13 +9,10 @@ Generates (query, relevant_chunk_ids, notes, difficulty) tuples at three levels:
 
 Progress is appended after each successful pair so a crash does not lose work.
 
-Setup (free — uses Google Gemini API):
-    1. Go to https://aistudio.google.com/apikey and create a free API key.
-    2. Add to .env:  GOOGLE_API_KEY=AIza...
+Setup (free — uses Groq API):
+    1. Create a free account at console.groq.com and generate an API key.
+    2. Add to .env:  GROQ_API_KEY=gsk_...
     3. python -m scripts.generate_rag_eval
-
-Free tier limits (Gemini 2.0 Flash): 15 requests/min, 1500 requests/day.
-The script adds a 4-second delay between calls to stay within the rate limit.
 """
 
 import json
@@ -24,7 +21,7 @@ import os
 import time
 from pathlib import Path
 
-import google.generativeai as genai
+from groq import Groq
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -32,8 +29,8 @@ load_dotenv()
 # ── Config ────────────────────────────────────────────────────────────────────
 CHUNK_FILE    = "data/processed/chunks_default_220w_40o.jsonl"
 OUTPUT_FILE   = "data/eval/eval_queries.jsonl"
-SLEEP_BETWEEN = 4.0   # seconds between calls (15 RPM free limit → 4 s/call)
-GEMINI_MODEL  = "gemini-2.0-flash"
+SLEEP_BETWEEN = 10.0   # seconds between calls; Groq free tier allows ~30 RPM
+GROQ_MODEL    = "llama-3.3-70b-versatile"
 RANDOM_SEED   = 42
 MAX_RETRIES   = 3
 
@@ -117,10 +114,14 @@ def append_result(result: dict, path: str) -> None:
 
 
 # ── LLM call ──────────────────────────────────────────────────────────────────
-def generate_pair(chunk_content: str, difficulty: str, model: genai.GenerativeModel) -> tuple[str, str]:
-    """Call Gemini and return (question, note) for the given chunk and difficulty."""
-    resp = model.generate_content(_make_prompt(difficulty, chunk_content))
-    raw = resp.text.strip()
+def generate_pair(chunk_content: str, difficulty: str, client: Groq) -> tuple[str, str]:
+    """Call Groq and return (question, note) for the given chunk and difficulty."""
+    resp = client.chat.completions.create(
+        model=GROQ_MODEL,
+        messages=[{"role": "user", "content": _make_prompt(difficulty, chunk_content)}],
+        temperature=0.7,
+    )
+    raw = resp.choices[0].message.content.strip()
     # Strip markdown code fences the model sometimes wraps around JSON
     if raw.startswith("```"):
         raw = raw.split("```")[1]
@@ -132,16 +133,15 @@ def generate_pair(chunk_content: str, difficulty: str, model: genai.GenerativeMo
 
 # ── Main ──────────────────────────────────────────────────────────────────────
 def main() -> None:
-    api_key = os.environ.get("GOOGLE_API_KEY")
+    api_key = os.environ.get("GROQ_API_KEY")
     if not api_key:
         raise SystemExit(
-            "ERROR: GOOGLE_API_KEY not found.\n"
-            "Get a free key at https://aistudio.google.com/apikey\n"
-            "Then add to .env:  GOOGLE_API_KEY=AIza..."
+            "ERROR: GROQ_API_KEY not found.\n"
+            "Create a free key at console.groq.com\n"
+            "Then add to .env:  GROQ_API_KEY=gsk_..."
         )
 
-    genai.configure(api_key=api_key)
-    model = genai.GenerativeModel(GEMINI_MODEL)
+    client = Groq(api_key=api_key)
 
     print("Loading chunks …")
     chunks = load_chunks(CHUNK_FILE)
@@ -185,7 +185,7 @@ def main() -> None:
         success = False
         for attempt in range(1, MAX_RETRIES + 1):
             try:
-                question, note = generate_pair(chunk["content"], difficulty, model)
+                question, note = generate_pair(chunk["content"], difficulty, client)
                 print(f"  Q: {question}")
                 print(f"  N: {note}")
                 append_result(
