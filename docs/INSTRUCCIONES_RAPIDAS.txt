@@ -1,0 +1,36 @@
+PoC PLN - uso rapido
+====================
+
+1. Descomprime este ZIP.
+2. Abre una terminal en la carpeta descomprimida.
+3. Asegurate de tener Docker, Git y Python 3.11/3.12.
+4. Instala dependencias.
+
+   Windows:
+   .\scripts\setup_windows.ps1
+
+   Linux/macOS:
+   bash scripts/setup_linux.sh
+
+   Si usas conda:
+   python -m pip install --upgrade pip
+   python -m pip install -r requirements.txt
+
+5. Arranca Weaviate:
+
+   docker compose up -d
+
+6. Indexa el manual con BGE:
+
+   python -m scripts.build_index --markdown ./data/manuals/808D_ADV_diagnostics_man_0718_en-US.md
+
+7. Ejecuta la PoC:
+
+   python -m scripts.run_poc --query "Error 26120 en el eje, que hago ahora?" --mode hybrid --top-k 5 --stream-final
+
+8. Si ya tienes descargado mistralai/Ministral-3-8B-Instruct-2512:
+
+   python -m scripts.run_poc --query "Error 26120 en el eje, que hago ahora?" --mode hybrid --top-k 5 --stream-final --local-files-only
+
+Si tu cache de Hugging Face esta en otra ruta, define HF_HOME antes.
+El README_RAG.md tiene la explicacion completa.

@@ -1,0 +1,176 @@
+# PoC completa T2 -> T3 -> T4
+
+Implementacion de la prueba de concepto descrita en `Proyecto_Longitudinal_PLN_entrega2.pdf`.
+La entrada principal es `scripts.run_poc` y ejecuta el ciclo completo:
+
+```text
+consulta ES -> T2a normalizacion -> T2b traduccion EN -> T3 RAG -> T4a respuesta EN -> T4b respuesta ES
+```
+
+## Arquitectura
+
+- `T0`: parseo opcional del PDF a Markdown con LlamaCloud.
+- `T2/T4`: LLM local `mistralai/Ministral-3-8B-Instruct-2512`.
+- `T3`: Weaviate local con chunks Markdown, BM25, embeddings `BAAI/bge-base-en-v1.5` y fusion RRF.
+
+Weaviate se ejecuta en Docker con volumen persistente. Los modelos no se meten en Docker: se guardan en la cache local de Hugging Face del sistema anfitrion.
+
+La PoC usa un unico entorno Python. BGE se carga directamente con `AutoTokenizer` y `AutoModel`, asi que T2, T3 y T4 pueden convivir en el mismo entorno.
+
+## Estructura
+
+```text
+rag_system/
+  chunking.py        # Chunking estatico por palabras sobre Markdown
+  embeddings.py      # Embeddings BGE con AutoTokenizer/AutoModel
+  weaviate_store.py  # Coleccion, insercion y busquedas BM25/vector
+  retriever.py       # BM25, vector e hibrido RRF
+  ingest.py          # Construccion del indice
+  pipeline.py        # API de recuperacion T3
+  poc_prompts.py     # Prompts T2/T4 de la PoC
+  metrics.py         # Recall@k, Hit@k, MRR, MAP
+llm_system/
+  local_llm.py       # Carga local de Ministral 3 y query_llm
+poc_system/
+  orchestrator.py    # Orquestacion T2a -> T2b -> T3 -> T4a -> T4b
+scripts/
+  setup_windows.ps1
+  setup_linux.sh
+  build_index.py
+  query_rag.py
+  run_poc.py
+  evaluate_retrieval.py
+  download_models.py
+integration/
+  poc_loop_t2_t3_t4.py
+```
+
+## Requisitos
+
+- Docker.
+- Python con `pip`. Se recomienda Python 3.11 o 3.12 para evitar problemas de compatibilidad con PyTorch.
+- Git instalado, porque `transformers` se instala desde GitHub para tener soporte actualizado de Ministral 3.
+- Acceso a la cache de Hugging Face donde este descargado `mistralai/Ministral-3-8B-Instruct-2512`, o conexion para descargarlo.
+
+El `requirements.txt` instala `transformers` desde la rama principal de Hugging Face porque Ministral 3 lo requiere, junto con `mistral-common>=1.8.6`.
+
+## Instalacion
+
+Windows:
+
+```powershell
+.\scripts\setup_windows.ps1
+```
+
+Linux/macOS:
+
+```bash
+bash scripts/setup_linux.sh
+```
+
+Con conda tambien puedes usar tu entorno y ejecutar directamente:
+
+```bash
+python -m pip install --upgrade pip
+python -m pip install -r requirements.txt
+```
+
+## Cache de modelos
+
+Los modelos se descargan una vez y quedan persistidos en la cache local de Hugging Face. Para controlar la ubicacion:
+
+Windows:
+
+```powershell
+$env:HF_HOME="C:\hf-cache-pln"
+```
+
+Linux/macOS:
+
+```bash
+export HF_HOME="$HOME/hf-cache-pln"
+```
+
+Pre-descarga BGE y Ministral:
+
+```bash
+python -m scripts.download_models --target all
+```
+
+Si el LLM ya esta descargado, `--local-files-only` evita que `transformers` intente volver a bajarlo al ejecutar la PoC.
+
+## Arrancar Weaviate
+
+```bash
+docker compose up -d
+```
+
+## Indexar el manual
+
+```bash
+python -m scripts.build_index --markdown ./data/manuals/808D_ADV_diagnostics_man_0718_en-US.md
+```
+
+La indexacion genera chunks, calcula embeddings BGE y guarda todo en Weaviate. Hay que repetirla si cambia el Markdown, el chunking o el modelo de embeddings.
+
+## Probar solo T3
+
+```bash
+python -m scripts.query_rag "What is the remedy for alarm 26120?" --mode hybrid --top-k 5
+```
+
+La salida queda lista para T4a:
+
+```text
+[REF:1] internal_id=C001282; source=...; section=26120 ...
+texto del chunk...
+```
+
+## Ejecutar la PoC completa
+
+```bash
+python -m scripts.run_poc --query "Error 26120 en el eje, que hago ahora?" --mode hybrid --top-k 5 --stream-final
+```
+
+Si Ministral 3 ya esta descargado:
+
+```bash
+python -m scripts.run_poc --query "Error 26120 en el eje, que hago ahora?" --mode hybrid --top-k 5 --stream-final --local-files-only
+```
+
+El comando imprime cada subtarea:
+
+```text
+[T2a] consulta normalizada en espanol
+[T2b] consulta traducida al ingles
+[T3] evidencia recuperada con [REF:n]
+[T4a] respuesta tecnica en ingles
+[T4b] respuesta final en espanol
+```
+
+## Bucle interactivo
+
+```bash
+python -m integration.poc_loop_t2_t3_t4
+```
+
+Este bucle carga el LLM una vez y permite lanzar varias consultas seguidas.
+
+## Parseo opcional con LlamaCloud
+
+Si ya tienes `data/manuals/808D_ADV_diagnostics_man_0718_en-US.md`, no hace falta parsear el PDF.
+
+```bash
+python -m pip install -r requirements-parse.txt
+export LLAMA_CLOUD_API_KEY="llx-..."
+python -m scripts.parse_with_llamacloud --pdf ./RAG-docs/808D_ADV_diagnostics_man_0718_en-US.pdf --output ./data/manuals/808D_ADV_diagnostics_man_0718_en-US.md
+```
+
+## Evaluacion de T3
+
+```bash
+python -m scripts.export_chunks --markdown ./data/manuals/808D_ADV_diagnostics_man_0718_en-US.md --output ./data/processed/chunks_default_220w_40o.jsonl
+python -m scripts.evaluate_retrieval --dataset eval_queries.jsonl --modes bm25,hybrid --top-k 5
+```
+
+El script reporta `Recall@k`, `Hit@k`, `MRR`, `MAP` y latencia media.

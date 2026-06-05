@@ -1,0 +1,5 @@
+{"query": "What procedure should be followed to resolve alarm 26120 associated with the axis?", "relevant_chunk_ids": ["C001282"], "notes": "Alarm 26120 remedy."}
+{"query": "What should be done for alarm 26121 related to a neutral axis and AA_ESR_ENABLE?", "relevant_chunk_ids": ["C001283"], "notes": "Alarm 26121 remedy."}
+{"query": "How should alarm 25080 axis positioning monitoring be handled?", "relevant_chunk_ids": ["C001220"], "notes": "Alarm 25080 remedy."}
+{"query": "What is the remedy for alarm 16730 wrong axis parameter?", "relevant_chunk_ids": ["C000837"], "notes": "Alarm 16730 remedy."}
+
