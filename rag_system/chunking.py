@@ -148,3 +148,192 @@ def write_chunks_jsonl(chunks: Iterable[DocumentChunk], output_path: str | Path)
     with path.open("w", encoding="utf-8") as handle:
         for chunk in chunks:
             handle.write(json.dumps(chunk.to_weaviate_properties(), ensure_ascii=True) + "\n")
+
+
+# ── Strategy 2: alarm-based chunking ─────────────────────────────────────────
+#
+# Splits the document at alarm-number heading boundaries, then recursively
+# subdivides oversized chunks at alarm field boundaries (Explanation / Reaction
+# / Remedy / Programm continuation), injecting the alarm header as a prefix in
+# every continuation sub-chunk.  Non-alarm content falls back to blank-line
+# splitting.  Parameters are character-based (not word-based).
+
+_S2_ALARM_START_RE = re.compile(
+    r"^(#{1,3}\s+\d{4,6}[\s%][^\n]*|\*\*\d{4,6}\*\*[^\n]*)",
+    re.MULTILINE,
+)
+_S2_FIELD_RE = re.compile(
+    r"(?=\n\*\*(?:Parameters|Explanation|Reaction|Remedy|Programm continuation):\*\*)",
+    re.MULTILINE,
+)
+
+
+def _s2_split_by_alarm(text: str) -> list[str]:
+    pattern = re.compile(
+        r"(?=^#{1,3}\s+\d{4,6}[\s%]|^\*\*\d{4,6}\*\*)",
+        re.MULTILINE,
+    )
+    return [c.strip() for c in pattern.split(text) if c.strip()]
+
+
+def _s2_extract_alarm_header(chunk: str) -> str:
+    m = _S2_ALARM_START_RE.search(chunk)
+    return m.group(0).strip() if m else ""
+
+
+def _s2_merge_to_size(pieces: list[str], max_size: int) -> list[str]:
+    merged: list[str] = []
+    buf = ""
+    for p in pieces:
+        p = p.strip()
+        if not p:
+            continue
+        candidate = (buf + "\n\n" + p).strip() if buf else p
+        if len(candidate) <= max_size:
+            buf = candidate
+        else:
+            if buf:
+                merged.append(buf)
+            buf = p
+    if buf:
+        merged.append(buf)
+    return merged
+
+
+def _s2_recursive_split(text: str, max_size: int, seps: list[str]) -> list[str]:
+    if len(text) <= max_size or not seps:
+        return [text]
+    sep, rest = seps[0], seps[1:]
+    parts = text.split(sep)
+    if len(parts) > 1:
+        parts = [parts[0]] + [sep + p for p in parts[1:]]
+    result: list[str] = []
+    for part in parts:
+        if len(part) <= max_size:
+            result.append(part)
+        else:
+            result.extend(_s2_recursive_split(part, max_size, rest))
+    return result
+
+
+def _s2_subdivide_alarm_chunk(chunk: str, max_size: int, overlap: int) -> list[str]:
+    header = _s2_extract_alarm_header(chunk)
+    merged = _s2_merge_to_size(_S2_FIELD_RE.split(chunk), max_size)
+    final_pieces: list[str] = []
+    for piece in merged:
+        if len(piece) <= max_size:
+            final_pieces.append(piece)
+        else:
+            sub = _s2_recursive_split(piece, max_size, ["\n\n", "\n", " "])
+            final_pieces.extend(_s2_merge_to_size(sub, max_size))
+    if len(final_pieces) <= 1:
+        return final_pieces or [chunk]
+    result = [final_pieces[0]]
+    n = len(final_pieces)
+    for i in range(1, n):
+        tail = final_pieces[i - 1][-overlap:].strip() if overlap > 0 else ""
+        parts: list[str] = []
+        if header:
+            parts.append(f"{header} [cont. {i}/{n-1}]")
+        if tail:
+            parts.append(f"[...] {tail}")
+        if parts:
+            parts.append("")
+        parts.append(final_pieces[i].strip())
+        result.append("\n".join(parts))
+    return result
+
+
+def _s2_subdivide_plain_chunk(chunk: str, max_size: int) -> list[str]:
+    pieces = _s2_recursive_split(chunk, max_size, ["\n\n", "\n", " "])
+    return _s2_merge_to_size(pieces, max_size) or [chunk]
+
+
+def chunk_strategy_2(
+    markdown_path: str | Path,
+    max_chars: int = 2000,
+    overlap: int = 150,
+) -> list[DocumentChunk]:
+    """Alarm-based chunking with recursive field-boundary subdivision.
+
+    Splits the document at alarm-number heading boundaries, subdivides chunks
+    exceeding `max_chars` at semantic field boundaries (Explanation / Reaction
+    / Remedy / Programm continuation), and injects the alarm header as a prefix
+    into every continuation sub-chunk so that retrieval can always identify
+    which alarm the text belongs to.
+
+    Returns DocumentChunk objects with the same schema as chunk_markdown_by_words,
+    so they are drop-in compatible with build_index / write_chunks_jsonl.
+    """
+    path = Path(markdown_path).expanduser().resolve()
+    text = path.read_text(encoding="utf-8")
+    source = path.name
+    source_path_str = str(path)
+    doc_lines = text.splitlines()
+    total_lines = len(doc_lines)
+
+    alarm_raw_chunks = _s2_split_by_alarm(text)
+
+    # For each raw alarm chunk, find its start line (1-indexed) by matching
+    # its first non-empty line against the original document, scanning forward.
+    chunk_start_lines: list[int] = []
+    search_from = 0
+    for raw_chunk in alarm_raw_chunks:
+        first_line = next((ln for ln in raw_chunk.splitlines() if ln.strip()), "")
+        for i in range(search_from, total_lines):
+            if doc_lines[i].strip() == first_line.strip():
+                chunk_start_lines.append(i + 1)
+                search_from = i + 1
+                break
+        else:
+            chunk_start_lines.append(search_from + 1)
+
+    chunks: list[DocumentChunk] = []
+
+    for raw_idx, raw_chunk in enumerate(alarm_raw_chunks):
+        start_line = chunk_start_lines[raw_idx]
+        end_line = (
+            chunk_start_lines[raw_idx + 1] - 1
+            if raw_idx + 1 < len(chunk_start_lines)
+            else total_lines
+        )
+
+        if len(raw_chunk) <= max_chars:
+            sub_chunks = [raw_chunk]
+        elif _s2_extract_alarm_header(raw_chunk):
+            sub_chunks = _s2_subdivide_alarm_chunk(raw_chunk, max_chars, overlap)
+        else:
+            sub_chunks = _s2_subdivide_plain_chunk(raw_chunk, max_chars)
+
+        for sub_text in sub_chunks:
+            sub_text = sub_text.strip()
+            if not sub_text:
+                continue
+
+            header = _s2_extract_alarm_header(sub_text)
+            if header:
+                clean = re.sub(r"^#{1,3}\s*", "", header).replace("**", "").strip()
+                section = clean
+                section_path = [clean]
+            else:
+                section = "Document preamble"
+                section_path = []
+
+            chunk_index = len(chunks) + 1
+            chunks.append(
+                DocumentChunk(
+                    chunk_id=f"C{chunk_index:06d}",
+                    source=source,
+                    source_path=source_path_str,
+                    chunk_index=chunk_index,
+                    text=sub_text,
+                    section=section,
+                    section_path=section_path,
+                    start_line=start_line,
+                    end_line=end_line,
+                    word_count=len(WORD_RE.findall(sub_text)),
+                    content_sha256=_sha256(sub_text),
+                )
+            )
+
+    return chunks

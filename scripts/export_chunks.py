@@ -4,7 +4,7 @@ import argparse
 import sys
 from pathlib import Path
 
-from rag_system.chunking import chunk_markdown_by_words, write_chunks_jsonl
+from rag_system.chunking import chunk_markdown_by_words, write_chunks_jsonl, chunk_strategy_2
 from rag_system.config import load_settings
 
 
@@ -21,7 +21,8 @@ def main() -> None:
     parser.add_argument("--chunk-overlap", type=int, default=settings.chunk_overlap_words)
     args = parser.parse_args()
 
-    chunks = chunk_markdown_by_words(args.markdown, args.chunk_words, args.chunk_overlap)
+    # chunks = chunk_markdown_by_words(args.markdown, args.chunk_words, args.chunk_overlap)
+    chunks = chunk_strategy_2(args.markdown, max_chars=2500, overlap=150)
     write_chunks_jsonl(chunks, args.output)
     print(f"[RAG] Exportados {len(chunks)} chunks a {args.output}")
 

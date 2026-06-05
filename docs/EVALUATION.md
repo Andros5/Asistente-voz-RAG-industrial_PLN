@@ -16,7 +16,7 @@ No evalua automaticamente:
 Formato JSONL:
 
 ```json
-{"query": "What procedure should be followed to resolve alarm 26120 associated with the axis?", "relevant_chunk_ids": ["C001282"]}
+{"query": "What procedure should be followed to resolve alarm 26120 associated with the axis?", "relevant_chunk_ids": ["C001282"], "notes": "Alarm 26120 remedy.", "difficulty": "medium"}
 ```
 
 Dataset incluido:

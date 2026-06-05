@@ -21,7 +21,7 @@ La PoC usa un unico entorno Python. BGE se carga directamente con `AutoTokenizer
 
 ```text
 rag_system/
-  chunking.py        # Chunking estatico por palabras sobre Markdown
+  chunking.py        # Contiene dos estrategias de chunking: por palabras y por caracteres con solapamiento
   embeddings.py      # Embeddings BGE con AutoTokenizer/AutoModel
   weaviate_store.py  # Coleccion, insercion y busquedas BM25/vector
   retriever.py       # BM25, vector e hibrido RRF
@@ -41,6 +41,8 @@ scripts/
   run_poc.py
   evaluate_retrieval.py
   download_models.py
+  generate_rag_eval.py
+  export_chunks.py
 integration/
   poc_loop_t2_t3_t4.py
 ```
