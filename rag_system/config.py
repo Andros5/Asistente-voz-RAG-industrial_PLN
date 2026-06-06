@@ -33,6 +33,7 @@ class Settings:
     collection_name: str = "Sinumerik808DChunks"
 
     markdown_path: Path = Path("./data/manuals/808D_ADV_diagnostics_man_0718_en-US.md")
+    chunks_path: Path = Path("./data/processed/chunks_strategy2_2500c_150o.jsonl")
     chunk_words: int = 220
     chunk_overlap_words: int = 40
     chunk_max_chars: int = 2500
@@ -65,6 +66,7 @@ def load_settings() -> Settings:
         weaviate_grpc_port=_as_int("WEAVIATE_GRPC_PORT", 50051),
         collection_name=os.getenv("RAG_COLLECTION_NAME", "Sinumerik808DChunks"),
         markdown_path=_as_path("RAG_MARKDOWN_PATH", "./data/manuals/808D_ADV_diagnostics_man_0718_en-US.md"),
+        chunks_path=_as_path("RAG_CHUNKS_PATH", "./data/processed/chunks_strategy2_2500c_150o.jsonl"),
         chunk_words=_as_int("RAG_CHUNK_WORDS", 220),
         chunk_overlap_words=_as_int("RAG_CHUNK_OVERLAP_WORDS", 40),
         chunk_max_chars=_as_int("RAG_CHUNK_MAX_CHARS", 2500),

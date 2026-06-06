@@ -20,9 +20,9 @@ PoC PLN - uso rapido
 
    docker compose up -d
 
-6. Indexa el manual con BGE:
+6. Indexa Weaviate con los chunks versionados:
 
-   python -m scripts.build_index --markdown ./data/manuals/808D_ADV_diagnostics_man_0718_en-US.md
+   python -m scripts.build_index --chunks ./data/processed/chunks_strategy2_2500c_150o.jsonl
 
 7. Ejecuta la PoC:
 

@@ -141,7 +141,7 @@ class WeaviateRAGStore:
 
     @staticmethod
     def _uuid_for_chunk(chunk: DocumentChunk) -> str:
-        key = f"{chunk.source_path}:{chunk.chunk_id}:{chunk.content_sha256}"
+        key = f"{chunk.source}:{chunk.chunk_id}:{chunk.content_sha256}"
         return str(uuid.uuid5(uuid.NAMESPACE_URL, key))
 
     @staticmethod

@@ -107,15 +107,15 @@ Si el LLM ya esta descargado, `--local-files-only` evita que `transformers` inte
 docker compose up -d
 ```
 
-## Indexar el manual
+## Indexar en Weaviate desde el JSONL
 
 ```bash
-python -m scripts.build_index --markdown ./data/manuals/808D_ADV_diagnostics_man_0718_en-US.md
+python -m scripts.build_index --chunks ./data/processed/chunks_strategy2_2500c_150o.jsonl
 ```
 
-La indexacion genera chunks, calcula embeddings BGE y guarda todo en Weaviate. Hay que repetirla si cambia el Markdown, el chunking o el modelo de embeddings.
+La indexacion lee los chunks versionados en JSONL, calcula embeddings BGE y guarda todo en Weaviate. Hay que repetirla si cambia el JSONL, el modelo de embeddings o se borra el volumen de Weaviate.
 
-La indexacion no crea el JSONL de `data/processed`; para eso se usa `scripts.export_chunks`.
+Para desarrollo tambien se puede regenerar desde Markdown con `--from-markdown`, pero el despliegue reproducible de la PoC debe usar `--chunks`.
 
 ## Probar solo T3
 
@@ -174,6 +174,7 @@ python -m scripts.parse_with_llamacloud --pdf ./RAG-docs/808D_ADV_diagnostics_ma
 
 ```bash
 python -m scripts.export_chunks --markdown ./data/manuals/808D_ADV_diagnostics_man_0718_en-US.md --output ./data/processed/chunks_strategy2_2500c_150o.jsonl
+python -m scripts.build_index --chunks ./data/processed/chunks_strategy2_2500c_150o.jsonl
 python -m scripts.evaluate_retrieval --dataset ./data/eval/eval_queries.jsonl --modes bm25,hybrid --top-k 5
 ```
 

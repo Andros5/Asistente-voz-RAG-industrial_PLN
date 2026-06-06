@@ -84,13 +84,19 @@ docker compose up -d
 
 ## Construir el indice
 
+El despliegue recomendado usa el JSONL versionado como fuente de verdad de los chunks. Asi todos los equipos indexan los mismos `chunk_id`, textos y metadatos:
+
 ```bash
-python -m scripts.build_index --markdown ./data/manuals/808D_ADV_diagnostics_man_0718_en-US.md
+python -m scripts.build_index --chunks ./data/processed/chunks_strategy2_2500c_150o.jsonl
 ```
 
-La indexacion genera chunks, calcula embeddings BGE y guarda los objetos en Weaviate. No hay que repetirla antes de cada prueba: solo si cambia el Markdown, el chunking, el modelo de embeddings o se borra el volumen de Weaviate.
+La indexacion lee los chunks del JSONL, calcula embeddings BGE y guarda los objetos en Weaviate. No hay que repetirla antes de cada prueba: solo si cambia el JSONL, el modelo de embeddings o se borra el volumen de Weaviate.
 
-Este comando no escribe el JSONL de `data/processed`; los chunks se generan en memoria y se insertan en Weaviate.
+Si se quiere regenerar e indexar directamente desde el Markdown para desarrollo:
+
+```bash
+python -m scripts.build_index --from-markdown --markdown ./data/manuals/808D_ADV_diagnostics_man_0718_en-US.md
+```
 
 ## Probar T3
 
@@ -129,6 +135,8 @@ python -m scripts.export_chunks --markdown ./data/manuals/808D_ADV_diagnostics_m
 ```
 
 Este comando solo crea el JSONL para inspeccion, evaluacion y generacion de queries. No inserta nada en Weaviate.
+
+Despues de cambiar este JSONL, vuelve a ejecutar `scripts.build_index --chunks ...` para que Weaviate quede alineado.
 
 ## Regenerar queries de evaluacion
 

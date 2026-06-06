@@ -38,27 +38,29 @@ Estrategias posibles:
 - Chunking semantico por similitud entre parrafos.
 - Chunking jerarquico: seccion completa para BM25 y subchunks para vectorial.
 
-Actualmente `rag_system/ingest.py` indexa esta estrategia por defecto. Si se anade otra estrategia, debe alinearse tambien con `scripts/export_chunks.py` y `data/eval/eval_queries.jsonl`.
+Actualmente `scripts.export_chunks.py` genera esta estrategia y `scripts.build_index.py` indexa por defecto desde el JSONL resultante. Si se anade otra estrategia, debe alinearse tambien con `data/eval/eval_queries.jsonl`.
 
 ## Exportacion e indexacion
 
-Hay dos caminos separados que deben usar la misma estrategia:
+Hay dos pasos separados:
 
 ```text
 Markdown -> scripts.export_chunks -> data/processed/chunks_strategy2_2500c_150o.jsonl
-Markdown -> scripts.build_index   -> Weaviate
+JSONL    -> scripts.build_index   -> Weaviate
 ```
 
 `scripts.export_chunks` crea el JSONL para inspeccion, evaluacion y generacion de queries. No inserta en Weaviate.
 
-`scripts.build_index` genera los chunks en memoria, calcula embeddings BGE e inserta chunks y vectores en Weaviate. No crea ni actualiza automaticamente el JSONL.
+`scripts.build_index` lee el JSONL versionado, calcula embeddings BGE e inserta chunks y vectores en Weaviate. Por defecto no regenera chunks desde Markdown.
+
+Para desarrollo existe `scripts.build_index --from-markdown`, que regenera chunks desde el Markdown antes de indexar. No es el flujo recomendado para desplegar la PoC porque puede producir divergencias si no se actualiza tambien el JSONL.
 
 Para que la evaluacion sea valida, `data/processed/chunks_strategy2_2500c_150o.jsonl`, `data/eval/eval_queries.jsonl` y la coleccion de Weaviate deben estar alineados en `chunk_id` y contenido.
 
 ## Archivos relacionados
 
 - `rag_system/models.py`: estructura `DocumentChunk`.
-- `rag_system/ingest.py`: llama al chunking antes de generar embeddings.
-- `scripts/build_index.py`: expone parametros de chunking por CLI.
+- `rag_system/ingest.py`: carga chunks desde JSONL o Markdown y genera embeddings.
+- `scripts/build_index.py`: indexa desde JSONL por defecto.
 - `scripts/export_chunks.py`: exporta chunks a JSONL para inspeccion y evaluacion.
 - `tests/test_chunking.py`: tests unitarios de la estrategia actual.
