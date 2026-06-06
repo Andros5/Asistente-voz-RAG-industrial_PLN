@@ -20,7 +20,6 @@ dist/
 build/
 *.egg-info/
 *.log
-data/eval/reports/*.json
 
 # Model/cache directories, if created inside the repo
 .cache/
