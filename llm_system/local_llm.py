@@ -103,7 +103,6 @@ class LocalLLM:
                 **tokenized,
                 generation_config=generation_config,
                 max_new_tokens=1,
-                use_model_defaults=False,
             )
 
     def query(
@@ -135,7 +134,6 @@ class LocalLLM:
         gen_kwargs = {
             "generation_config": generation_config,
             "max_new_tokens": max_new_tokens,
-            "use_model_defaults": False,
         }
         if stream:
             gen_kwargs["streamer"] = TextStreamer(self.tokenizer, skip_prompt=True, skip_special_tokens=True)

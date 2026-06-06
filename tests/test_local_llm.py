@@ -44,6 +44,6 @@ def test_local_llm_passes_new_token_limit_without_max_length_clash():
     generation_config = generate_kwargs["generation_config"]
 
     assert generate_kwargs["max_new_tokens"] == 512
-    assert generate_kwargs["use_model_defaults"] is False
+    assert "use_model_defaults" not in generate_kwargs
     assert generation_config.max_length is None
     assert generation_config.max_new_tokens is None
