@@ -79,6 +79,7 @@ class LocalLLM:
         generation_config = deepcopy(self.model.generation_config)
         generation_config.do_sample = do_sample
         generation_config.max_length = None
+        generation_config.max_new_tokens = None
         if not do_sample:
             generation_config.temperature = None
             generation_config.top_p = None
@@ -97,11 +98,12 @@ class LocalLLM:
         ).to(self.device)
         with torch.no_grad():
             generation_config = self._generation_config(do_sample=False)
-            generation_config.max_new_tokens = 1
             generation_config.pad_token_id = self.tokenizer.eos_token_id
             self.model.generate(
                 **tokenized,
                 generation_config=generation_config,
+                max_new_tokens=1,
+                use_model_defaults=False,
             )
 
     def query(
@@ -126,13 +128,14 @@ class LocalLLM:
 
         do_sample = temperature > 0.0
         generation_config = self._generation_config(do_sample=do_sample)
-        generation_config.max_new_tokens = max_new_tokens
         generation_config.pad_token_id = self.tokenizer.eos_token_id
         if do_sample:
             generation_config.temperature = temperature
 
         gen_kwargs = {
             "generation_config": generation_config,
+            "max_new_tokens": max_new_tokens,
+            "use_model_defaults": False,
         }
         if stream:
             gen_kwargs["streamer"] = TextStreamer(self.tokenizer, skip_prompt=True, skip_special_tokens=True)
