@@ -33,6 +33,24 @@ Los `relevant_chunk_ids` deben pertenecer al archivo de chunks exportado con la 
 python -m scripts.evaluate_retrieval --dataset ./data/eval/eval_queries.jsonl --modes bm25,vector,hybrid --top-k 5
 ```
 
+Por defecto, ademas del resumen por consola, el script guarda un reporte JSON de auditoria en:
+
+```text
+data/eval/reports/retrieval_eval_<timestamp>.json
+```
+
+Tambien puede fijarse una ruta explicita:
+
+```bash
+python -m scripts.evaluate_retrieval --dataset ./data/eval/eval_queries.jsonl --modes bm25,vector,hybrid --top-k 5 --audit-output ./data/eval/reports/last_eval.json
+```
+
+Para ejecutar solo la salida historica de consola:
+
+```bash
+python -m scripts.evaluate_retrieval --dataset ./data/eval/eval_queries.jsonl --modes bm25,vector,hybrid --top-k 5 --no-audit
+```
+
 ## Metricas
 
 Implementadas en `rag_system/metrics.py`:
@@ -42,6 +60,17 @@ Implementadas en `rag_system/metrics.py`:
 - `MRR`
 - `MAP`
 - Latencia media por consulta
+
+## Reporte de auditoria
+
+El JSON de auditoria contiene:
+
+- Metadatos de ejecucion: fecha, dataset, archivo de chunks, coleccion de Weaviate, `top_k`, modos evaluados y parametros relevantes de retrieval.
+- `summaries`: metricas agregadas por modo, fallos, exitos, exitos parciales, latencia media/p95 y resumen por dificultad (`easy`, `medium`, `hard`).
+- `examples`: detalle de cada pregunta con `query`, `difficulty`, `notes`, `relevant_chunk_ids`, metadatos de los chunks relevantes y resultados por modo.
+- Para cada modo de cada pregunta: `success`, `fully_recalled`, `first_relevant_rank`, `missing_relevant_chunk_ids`, ranking recuperado, scores/ranks BM25-vector-RRF, metricas individuales y latencia.
+
+Una pregunta se considera fallada en un modo cuando ningun `relevant_chunk_id` aparece en el top-k recuperado (`Hit@k = 0`). Si aparece al menos uno pero no todos los relevantes, queda marcada como exito parcial.
 
 ## Chunks de referencia
 

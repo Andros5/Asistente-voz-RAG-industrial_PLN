@@ -128,6 +128,14 @@ python -m scripts.evaluate_retrieval --dataset ./data/eval/eval_queries.jsonl --
 
 Metricas implementadas: `Recall@k`, `Hit@k`, `MRR`, `MAP` y latencia media. La evaluacion automatica cubre T3; la calidad completa T2 -> T4 se revisa funcionalmente.
 
+Ademas del resumen por consola, el evaluador guarda por defecto un JSON auditable en `data/eval/reports/`. Ese reporte incluye cada pregunta, dificultad, notas, chunks relevantes, ranking recuperado por modo, fallos, exitos parciales, posicion del primer chunk relevante y resumen por dificultad.
+
+Para elegir ruta:
+
+```bash
+python -m scripts.evaluate_retrieval --dataset ./data/eval/eval_queries.jsonl --modes bm25,vector,hybrid --top-k 5 --audit-output ./data/eval/reports/last_eval.json
+```
+
 ## Exportar chunks
 
 ```bash

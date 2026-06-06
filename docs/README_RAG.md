@@ -178,7 +178,15 @@ python -m scripts.build_index --chunks ./data/processed/chunks_strategy2_2500c_1
 python -m scripts.evaluate_retrieval --dataset ./data/eval/eval_queries.jsonl --modes bm25,hybrid --top-k 5
 ```
 
-El script reporta `Recall@k`, `Hit@k`, `MRR`, `MAP` y latencia media.
+El script reporta por consola `Recall@k`, `Hit@k`, `MRR`, `MAP`, latencia media y numero de fallos. Tambien guarda por defecto un reporte JSON auditable en `data/eval/reports/`.
+
+Para fijar una ruta concreta:
+
+```bash
+python -m scripts.evaluate_retrieval --dataset ./data/eval/eval_queries.jsonl --modes bm25,vector,hybrid --top-k 5 --audit-output ./data/eval/reports/last_eval.json
+```
+
+El reporte contiene cada pregunta con dificultad, notas, chunks relevantes, ranking recuperado por modo, scores/ranks, fallos, exitos parciales, posicion del primer relevante, metricas individuales y resumen por dificultad.
 
 ## Generacion de queries de evaluacion
 
