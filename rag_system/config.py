@@ -35,6 +35,8 @@ class Settings:
     markdown_path: Path = Path("./data/manuals/808D_ADV_diagnostics_man_0718_en-US.md")
     chunk_words: int = 220
     chunk_overlap_words: int = 40
+    chunk_max_chars: int = 2500
+    chunk_overlap_chars: int = 150
 
     retrieval_mode: str = "hybrid"
     top_k: int = 5
@@ -65,6 +67,8 @@ def load_settings() -> Settings:
         markdown_path=_as_path("RAG_MARKDOWN_PATH", "./data/manuals/808D_ADV_diagnostics_man_0718_en-US.md"),
         chunk_words=_as_int("RAG_CHUNK_WORDS", 220),
         chunk_overlap_words=_as_int("RAG_CHUNK_OVERLAP_WORDS", 40),
+        chunk_max_chars=_as_int("RAG_CHUNK_MAX_CHARS", 2500),
+        chunk_overlap_chars=_as_int("RAG_CHUNK_OVERLAP_CHARS", 150),
         retrieval_mode=os.getenv("RAG_MODE", "hybrid").lower(),
         top_k=_as_int("RAG_TOP_K", 5),
         hybrid_candidates=_as_int("RAG_HYBRID_CANDIDATES", 25),

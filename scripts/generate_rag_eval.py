@@ -27,7 +27,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # ── Config ────────────────────────────────────────────────────────────────────
-CHUNK_FILE    = "data/processed/chunks_default_220w_40o.jsonl"
+CHUNK_FILE    = "data/processed/chunks_strategy2_2500c_150o.jsonl"
 OUTPUT_FILE   = "data/eval/eval_queries.jsonl"
 SLEEP_BETWEEN = 10.0   # seconds between calls; Groq free tier allows ~30 RPM
 GROQ_MODEL    = "llama-3.3-70b-versatile"

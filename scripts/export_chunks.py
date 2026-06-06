@@ -4,7 +4,7 @@ import argparse
 import sys
 from pathlib import Path
 
-from rag_system.chunking import chunk_markdown_by_words, write_chunks_jsonl, chunk_strategy_2
+from rag_system.chunking import chunk_strategy_2, write_chunks_jsonl
 from rag_system.config import load_settings
 
 
@@ -16,13 +16,12 @@ def main() -> None:
     settings = load_settings()
     parser = argparse.ArgumentParser(description="Exporta chunks del Markdown a JSONL para inspeccion/evaluacion.")
     parser.add_argument("--markdown", type=Path, default=settings.markdown_path)
-    parser.add_argument("--output", type=Path, default=Path("data/processed/chunks_default_220w_40o.jsonl"))
-    parser.add_argument("--chunk-words", type=int, default=settings.chunk_words)
-    parser.add_argument("--chunk-overlap", type=int, default=settings.chunk_overlap_words)
+    parser.add_argument("--output", type=Path, default=Path("data/processed/chunks_strategy2_2500c_150o.jsonl"))
+    parser.add_argument("--chunk-max-chars", type=int, default=settings.chunk_max_chars)
+    parser.add_argument("--chunk-overlap-chars", type=int, default=settings.chunk_overlap_chars)
     args = parser.parse_args()
 
-    # chunks = chunk_markdown_by_words(args.markdown, args.chunk_words, args.chunk_overlap)
-    chunks = chunk_strategy_2(args.markdown, max_chars=2500, overlap=150)
+    chunks = chunk_strategy_2(args.markdown, max_chars=args.chunk_max_chars, overlap=args.chunk_overlap_chars)
     write_chunks_jsonl(chunks, args.output)
     print(f"[RAG] Exportados {len(chunks)} chunks a {args.output}")
 

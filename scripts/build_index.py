@@ -18,8 +18,8 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Construye el indice RAG en Weaviate.")
     parser.add_argument("--markdown", type=Path, default=settings.markdown_path)
     parser.add_argument("--collection", default=settings.collection_name)
-    parser.add_argument("--chunk-words", type=int, default=settings.chunk_words)
-    parser.add_argument("--chunk-overlap", type=int, default=settings.chunk_overlap_words)
+    parser.add_argument("--chunk-max-chars", type=int, default=settings.chunk_max_chars)
+    parser.add_argument("--chunk-overlap-chars", type=int, default=settings.chunk_overlap_chars)
     parser.add_argument("--no-reset", action="store_true", help="No borra la coleccion existente.")
     args = parser.parse_args()
 
@@ -28,8 +28,8 @@ def main() -> None:
         markdown_path=args.markdown,
         settings=settings,
         reset=not args.no_reset,
-        chunk_words=args.chunk_words,
-        chunk_overlap_words=args.chunk_overlap,
+        chunk_max_chars=args.chunk_max_chars,
+        chunk_overlap_chars=args.chunk_overlap_chars,
     )
 
 

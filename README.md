@@ -71,8 +71,8 @@ Copy-Item .env.example .env
 Valores principales:
 
 - `RAG_MARKDOWN_PATH=./data/manuals/808D_ADV_diagnostics_man_0718_en-US.md`
-- `RAG_CHUNK_WORDS=220`
-- `RAG_CHUNK_OVERLAP_WORDS=40`
+- `RAG_CHUNK_MAX_CHARS=2500`
+- `RAG_CHUNK_OVERLAP_CHARS=150`
 - `RAG_EMBEDDING_MODEL=BAAI/bge-base-en-v1.5`
 - `LLM_MODEL_ID=mistralai/Ministral-3-8B-Instruct-2512`
 
@@ -89,6 +89,8 @@ python -m scripts.build_index --markdown ./data/manuals/808D_ADV_diagnostics_man
 ```
 
 La indexacion genera chunks, calcula embeddings BGE y guarda los objetos en Weaviate. No hay que repetirla antes de cada prueba: solo si cambia el Markdown, el chunking, el modelo de embeddings o se borra el volumen de Weaviate.
+
+Este comando no escribe el JSONL de `data/processed`; los chunks se generan en memoria y se insertan en Weaviate.
 
 ## Probar T3
 
@@ -112,10 +114,10 @@ El comando imprime las salidas intermedias de T2a, T2b, T3, T4a y T4b.
 
 ## Evaluacion de recuperacion
 
-El repositorio incluye un dataset pequeno para validar el cableado de evaluacion:
+El repositorio incluye un dataset de evaluacion para T3 alineado con los chunks de Strategy 2:
 
 ```bash
-python -m scripts.evaluate_retrieval --dataset ./data/eval/eval_queries.sample.jsonl --modes bm25,hybrid --top-k 5
+python -m scripts.evaluate_retrieval --dataset ./data/eval/eval_queries.jsonl --modes bm25,vector,hybrid --top-k 5
 ```
 
 Metricas implementadas: `Recall@k`, `Hit@k`, `MRR`, `MAP` y latencia media. La evaluacion automatica cubre T3; la calidad completa T2 -> T4 se revisa funcionalmente.
@@ -123,8 +125,33 @@ Metricas implementadas: `Recall@k`, `Hit@k`, `MRR`, `MAP` y latencia media. La e
 ## Exportar chunks
 
 ```bash
-python -m scripts.export_chunks --markdown ./data/manuals/808D_ADV_diagnostics_man_0718_en-US.md --output ./data/processed/chunks_default_220w_40o.jsonl
+python -m scripts.export_chunks --markdown ./data/manuals/808D_ADV_diagnostics_man_0718_en-US.md --output ./data/processed/chunks_strategy2_2500c_150o.jsonl
 ```
+
+Este comando solo crea el JSONL para inspeccion, evaluacion y generacion de queries. No inserta nada en Weaviate.
+
+## Regenerar queries de evaluacion
+
+El generador de queries lee los chunks exportados en:
+
+```text
+data/processed/chunks_strategy2_2500c_150o.jsonl
+```
+
+y escribe el dataset en:
+
+```text
+data/eval/eval_queries.jsonl
+```
+
+No lee directamente Weaviate. Para usarlo hace falta una clave de Groq:
+
+```powershell
+$env:GROQ_API_KEY="gsk_..."
+python -m scripts.generate_rag_eval
+```
+
+Si `data/eval/eval_queries.jsonl` ya existe, el script continua desde los ejemplos existentes y evita repetir chunks. Para regenerar desde cero, renombra o borra antes ese archivo.
 
 ## Tests
 
@@ -140,4 +167,3 @@ Los tests no cargan el LLM ni Weaviate. Comprueban chunking, metricas y consiste
 - `docs/Proyecto_Longitudinal_PLN.pdf`: memoria base del trabajo.
 - `docs/CHUNKING.md`: funcionamiento actual y puntos de extension del chunking.
 - `docs/EVALUATION.md`: formato del dataset y uso de metricas.
-

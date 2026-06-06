@@ -1,100 +1,100 @@
-{"query": "What happens when spindle modulo axis declaration is missing in channel", "relevant_chunk_ids": ["C000177"], "notes": "Spindle modulo axis declaration", "difficulty": "easy"}
-{"query": "What causes the CNC lock function update to be rejected with cause 1, the clock not set?", "relevant_chunk_ids": ["C000290"], "notes": "CNC lock update rejection causes", "difficulty": "easy"}
-{"query": "Why does axis motion cancel when target position changes during jog operation", "relevant_chunk_ids": ["C001028"], "notes": "JOG position change issue", "difficulty": "hard"}
-{"query": "What is the remedy for nested spindle groups in one group plane?", "relevant_chunk_ids": ["C001445"], "notes": "Spindle groups nesting remedy", "difficulty": "easy"}
-{"query": "How do I internally store system configuration and program data for safekeeping?", "relevant_chunk_ids": ["C002130"], "notes": "Internal data backup procedure", "difficulty": "medium"}
-{"query": "What happens when counterspindle configuration is missing in a channel", "relevant_chunk_ids": ["C001567"], "notes": "Counterspindle setup error", "difficulty": "medium"}
-{"query": "What happens when the angle of wrap is too large in a channel", "relevant_chunk_ids": ["C001963"], "notes": "Wrap angle error remedy", "difficulty": "easy"}
-{"query": "What happens when parallel axes have invalid plane assignment in a block?", "relevant_chunk_ids": ["C000564"], "notes": "Illegal plane selection error", "difficulty": "medium"}
-{"query": "What happens when Z mirroring is missing in work offset for counterspindle", "relevant_chunk_ids": ["C001558"], "notes": "Z mirroring remedy", "difficulty": "easy"}
-{"query": "What happens when two-channel cutting is active in more than two channels at the same time", "relevant_chunk_ids": ["C001845"], "notes": "Two channel cutting error", "difficulty": "medium"}
-{"query": "How to resolve NCK alarm issues with fast I/O activation", "relevant_chunk_ids": ["C000183"], "notes": "Fast I/O remedy", "difficulty": "medium"}
-{"query": "How to select NC startup mode with cursor keys", "relevant_chunk_ids": ["C000046"], "notes": "NC startup mode selection", "difficulty": "easy"}
-{"query": "What causes the interpreter to stop when an axis exceeds the allowed number of interpolating axes?", "relevant_chunk_ids": ["C000281"], "notes": "Interpolation axis limit error", "difficulty": "medium"}
-{"query": "What happens when an invalid value is assigned to FXST in a block?", "relevant_chunk_ids": ["C001050"], "notes": "FXST invalid value range", "difficulty": "medium"}
-{"query": "What action resolves invalid block syntax errors in programmed addresses?", "relevant_chunk_ids": ["C000462"], "notes": "Block syntax error fix", "difficulty": "medium"}
-{"query": "What parameter to check for circular feed on 840D sl with SW 2.7 or later?", "relevant_chunk_ids": ["C001637"], "notes": "Circular feed parameter check", "difficulty": "easy"}
-{"query": "What happens when permissible measuring difference is exceeded in a channel block?", "relevant_chunk_ids": ["C001579"], "notes": "Permissible measuring difference error", "difficulty": "easy"}
-{"query": "Why can't I control an axis from the PLC when it's not in a neutral state?", "relevant_chunk_ids": ["C001265"], "notes": "Axis PLC control issue", "difficulty": "hard"}
-{"query": "What action resolves attribute restrictions in PROC instructions?", "relevant_chunk_ids": ["C000519"], "notes": "Invalid attribute remedy", "difficulty": "medium"}
-{"query": "What causes alarm 4152 for block display with absolute values configuration", "relevant_chunk_ids": ["C000170"], "notes": "Alarm 4152 remedy", "difficulty": "easy"}
-{"query": "What happens when oscillating controlled by synchronized actions with infeed motion in one NC block for channel and block assignment of OSCILL and POSP?", "relevant_chunk_ids": ["C000604"], "notes": "Oscill and POSP assignment", "difficulty": "easy"}
-{"query": "What errors occur when OEM transformation orientation axes are not defined?", "relevant_chunk_ids": ["C000208"], "notes": "OEM transformation errors", "difficulty": "easy"}
-{"query": "What happens when Block FZ is active but the number of teeth of the active D number of tool is zero?", "relevant_chunk_ids": ["C000422"], "notes": "Block FZ active error", "difficulty": "easy"}
-{"query": "Why is my digital input not being assigned to a slot?", "relevant_chunk_ids": ["C002042"], "notes": "Invalid base address", "difficulty": "hard"}
-{"query": "What actions resolve contour-related program interruptions?", "relevant_chunk_ids": ["C001928"], "notes": "Contour alarm remedy", "difficulty": "hard"}
-{"query": "What are the different types of alarms in SINUMERIK 808D ADVANCED?", "relevant_chunk_ids": ["C000019"], "notes": "SINUMERIK alarm types", "difficulty": "easy"}
-{"query": "What action resolves the grinding wheel configuration issue during part program execution?", "relevant_chunk_ids": ["C001715"], "notes": "Grinding wheel type error", "difficulty": "hard"}
-{"query": "What is the remedy for alarm 62001 Channel Block Dynamic response of axis inadequate", "relevant_chunk_ids": ["C001964"], "notes": "Alarm 62001 remedy", "difficulty": "easy"}
-{"query": "Why is production data being rejected during trace diagnostics", "relevant_chunk_ids": ["C000273"], "notes": "Data loss with trace", "difficulty": "hard"}
-{"query": "What is the remedy for alarm 62201 Channel Block Z offset issue", "relevant_chunk_ids": ["C001981"], "notes": "Alarm 62201 remedy", "difficulty": "easy"}
-{"query": "What happens when no free memory space is available for transformations on a channel?", "relevant_chunk_ids": ["C000213"], "notes": "Memory space for transformations", "difficulty": "easy"}
-{"query": "What causes contour preparation errors during part program execution?", "relevant_chunk_ids": ["C001757"], "notes": "Contour preparation error", "difficulty": "hard"}
-{"query": "What happens when self-cutting contour alarm 61932 occurs on a specific channel and block", "relevant_chunk_ids": ["C001930"], "notes": "Selfcutting contour alarm", "difficulty": "easy"}
-{"query": "What happens when the linear vector tolerance is exceeded in CYCLE996 or CYCLE9960?", "relevant_chunk_ids": ["C002002"], "notes": "Alarm 62317 remedy", "difficulty": "medium"}
-{"query": "What remedy for NCK alarms due to temporary excessive system load", "relevant_chunk_ids": ["C000710"], "notes": "NCK alarm remedy", "difficulty": "easy"}
-{"query": "What causes Channel block motion synchronous action wrong feed type error?", "relevant_chunk_ids": ["C000723"], "notes": "Motion sync action error", "difficulty": "easy"}
-{"query": "What causes an incorrect alarm in a measuring cycle on a specific channel?", "relevant_chunk_ids": ["C001613"], "notes": "Measuring cycle error", "difficulty": "medium"}
-{"query": "What is the reaction to alarm display", "relevant_chunk_ids": ["C001988"], "notes": "Alarm display reaction", "difficulty": "easy"}
-{"query": "What happens when $NT_CORR_ELEM_P chain element is not found?", "relevant_chunk_ids": ["C000205"], "notes": "Chain element not found errors", "difficulty": "easy"}
-{"query": "What action is taken when a label is missing from the pocket contour in a part program?", "relevant_chunk_ids": ["C001903"], "notes": "Label not found error", "difficulty": "medium"}
-{"query": "What causes the interpreter to stop when active radius setting is incorrect?", "relevant_chunk_ids": ["C001570"], "notes": "Radius setting mismatch fix", "difficulty": "medium"}
-{"query": "How to resolve issues by editing the program?", "relevant_chunk_ids": ["C000871"], "notes": "Program modification remedy", "difficulty": "medium"}
-{"query": "What causes error code when sum of active offsets does not equal zero in Channel block", "relevant_chunk_ids": ["C001685"], "notes": "Error 61426 remedy", "difficulty": "easy"}
-{"query": "What causes interpreter stop due to excessive contour elements in a channel?", "relevant_chunk_ids": ["C001931"], "notes": "Contour element limit exceeded", "difficulty": "medium"}
-{"query": "Why is SERUPRO not allowed for slave axis in channel", "relevant_chunk_ids": ["C000939"], "notes": "SERUPRO slave axis restriction", "difficulty": "easy"}
-{"query": "What to do when servo motor commissioning fails due to incorrect encoder configuration", "relevant_chunk_ids": ["C002122"], "notes": "Encoder motor config faults", "difficulty": "hard"}
-{"query": "What happens when no main spindle is selected for clamping for turning on a channel?", "relevant_chunk_ids": ["C001894"], "notes": "Turning main spindle selection", "difficulty": "easy"}
-{"query": "What does the 1st spindle not programmed error indicate for Channel %1 Block %2", "relevant_chunk_ids": ["C001343"], "notes": "Spindle programming error", "difficulty": "easy"}
-{"query": "What happens when infeed direction differs for new and continue profiling?", "relevant_chunk_ids": ["C001748"], "notes": "Infeed direction mismatch", "difficulty": "easy"}
-{"query": "Why does the system display an alarm after setting interface signals?", "relevant_chunk_ids": ["C002022"], "notes": "Interface alarm display", "difficulty": "hard"}
-{"query": "Why does the program stop when channels have different machining methods?", "relevant_chunk_ids": ["C001848"], "notes": "Technology mismatch remedy", "difficulty": "hard"}
-{"query": "What happens when tool diameters differ at 90 degrees?", "relevant_chunk_ids": ["C001557"], "notes": "Tool angle 90 degrees issue", "difficulty": "medium"}
-{"query": "What happens when an invalid value is entered for the machine date in a channel?", "relevant_chunk_ids": ["C000165"], "notes": "Invalid machine date value", "difficulty": "easy"}
-{"query": "What is the remedy for alarm 7500 block invalid protection level", "relevant_chunk_ids": ["C000276"], "notes": "Alarm 7500 remedy", "difficulty": "easy"}
-{"query": "What action can be taken when material does not move during machining?", "relevant_chunk_ids": ["C001433"], "notes": "Residual material remedy", "difficulty": "hard"}
-{"query": "What action is required when a channel's block references a non-existent tool?", "relevant_chunk_ids": ["C001616"], "notes": "Tool existence error fix", "difficulty": "medium"}
-{"query": "What happens when a D number is not assigned to a tool in ISO mode?", "relevant_chunk_ids": ["C000657"], "notes": "ISO mode D number error", "difficulty": "medium"}
-{"query": "What happens when an auxiliary function is improperly set up on a channel?", "relevant_chunk_ids": ["C000173"], "notes": "Illegal aux function config", "difficulty": "medium"}
-{"query": "What causes interpreter stop due to missing multi-channel data", "relevant_chunk_ids": ["C001342"], "notes": "Multi-channel data error", "difficulty": "medium"}
-{"query": "How to assign parameters for main spindle chuck in spindle chuck data", "relevant_chunk_ids": ["C001486"], "notes": "Spindle chuck parameter assignment", "difficulty": "easy"}
-{"query": "What remedy for NCK alarm 12554 block replacement cycle missing?", "relevant_chunk_ids": ["C000533"], "notes": "Alarm 12554 remedy", "difficulty": "easy"}
-{"query": "What happens when an axis stops due to a specific function being terminated?", "relevant_chunk_ids": ["C001107"], "notes": "Axis function cancellation", "difficulty": "hard"}
-{"query": "What happens when aligning a turning tool with multiple active tools in Channel %1 Block %2?", "relevant_chunk_ids": ["C001472"], "notes": "Aligning turning tools", "difficulty": "easy"}
-{"query": "What causes block direction reversal with WAB infeed motion alarms on the NCK system", "relevant_chunk_ids": ["C000366"], "notes": "NCK alarm 10741 remedy", "difficulty": "medium"}
-{"query": "What happens when there is incorrect parameterization of NUM or INDA in a channel's block?", "relevant_chunk_ids": ["C001375"], "notes": "Alarm 61106 remedy", "difficulty": "easy"}
-{"query": "What happens when block search fails to operate without calculation in ShopMill and ShopTurn?", "relevant_chunk_ids": ["C001901"], "notes": "Block search calculation mode", "difficulty": "medium"}
-{"query": "What happens when axis functions are simultaneously active for one axis with specified machine data?", "relevant_chunk_ids": ["C000189"], "notes": "Axis function conflict", "difficulty": "easy"}
-{"query": "What is the minimum log file size for logging measurement results", "relevant_chunk_ids": ["C001676"], "notes": "Log file size requirement", "difficulty": "medium"}
-{"query": "What remedy for axis configuration error in compensation table?", "relevant_chunk_ids": ["C001110"], "notes": "Compensation table error fix", "difficulty": "easy"}
-{"query": "What remedy for axis coordinate system-specific working area limit violation?", "relevant_chunk_ids": ["C001099"], "notes": "Axis limit violation remedy", "difficulty": "easy"}
-{"query": "How to update software for specific channel block", "relevant_chunk_ids": ["C001615"], "notes": "NCK software upgrade", "difficulty": "medium"}
-{"query": "What does Block number parameter represent in Channel number transformation error 61147", "relevant_chunk_ids": ["C001416"], "notes": "Transformation error 61147", "difficulty": "easy"}
-{"query": "How to recover from program interruption due to alarm", "relevant_chunk_ids": ["C001799"], "notes": "Alarm reset procedure", "difficulty": "hard"}
-{"query": "What happens when axis coordinates are within protection area on Channel %1 Block %2", "relevant_chunk_ids": ["C001875"], "notes": "Axis protection area error", "difficulty": "easy"}
-{"query": "What causes incorrect array size for CONTPRON parameters?", "relevant_chunk_ids": ["C000801"], "notes": "Contpro/Contdcon array error", "difficulty": "medium"}
-{"query": "Why does the system stop when tailstock and counterspindle are not synchronized?", "relevant_chunk_ids": ["C001895"], "notes": "Tailstock selection conflict", "difficulty": "hard"}
-{"query": "What is the remedy for too many directories in NC memory?", "relevant_chunk_ids": ["C000260"], "notes": "NC memory directory limit", "difficulty": "easy"}
-{"query": "What remedy for NCK alarms involves modifying part program with tool radius compensation?", "relevant_chunk_ids": ["C000373"], "notes": "NCK alarm remedy", "difficulty": "easy"}
-{"query": "What to do when part program stops due to missing contour data?", "relevant_chunk_ids": ["C001791"], "notes": "Missing contour data remedy", "difficulty": "hard"}
-{"query": "What happens when the angle relative to the reference edge is zero in a channel", "relevant_chunk_ids": ["C001621"], "notes": "Interpreter stop condition", "difficulty": "medium"}
-{"query": "Why does the axis fail to slow down during reference point approach and trigger an alarm?", "relevant_chunk_ids": ["C001067"], "notes": "Reference point approach failure", "difficulty": "hard"}
-{"query": "Why is changing access rights for system variables with REDEF not allowed in GUD files?", "relevant_chunk_ids": ["C000471"], "notes": "Redef access rights error", "difficulty": "easy"}
-{"query": "Why does the machine stop after requesting a combined movement on an axis?", "relevant_chunk_ids": ["C001150"], "notes": "Overlaid motion error", "difficulty": "hard"}
-{"query": "Why does the axis stop moving during a threading operation", "relevant_chunk_ids": ["C000319"], "notes": "Thread pitch decrease issue", "difficulty": "hard"}
-{"query": "How to clear NCK alarm and continue program?", "relevant_chunk_ids": ["C000602"], "notes": "NCK alarm clearance", "difficulty": "easy"}
-{"query": "What happens when a program contains new machining steps from a higher ShopMill version?", "relevant_chunk_ids": ["C001536"], "notes": "Higher ShopMill version alarm", "difficulty": "easy"}
-{"query": "What causes the interpreter to stop when the spindle direction is incorrectly programmed?", "relevant_chunk_ids": ["C001866"], "notes": "Spindle direction alarm", "difficulty": "medium"}
-{"query": "What is the meaning of NCK in Numerical Control Kernel context", "relevant_chunk_ids": ["C002154"], "notes": "Numerical Control Kernel", "difficulty": "easy"}
-{"query": "What action is required when a dresser reaches its wear limit length", "relevant_chunk_ids": ["C001732"], "notes": "Dresser wear limit remedy", "difficulty": "medium"}
-{"query": "What conditions allow changing the protection level of a block's access permission?", "relevant_chunk_ids": ["C000520"], "notes": "Block access permission levels", "difficulty": "medium"}
-{"query": "What operators are permissible for logic operations of real-time variables in motion synchronous actions?", "relevant_chunk_ids": ["C000546"], "notes": "Motion sync action operators", "difficulty": "easy"}
-{"query": "Why can't I perform precise positioning within a specific block of code?", "relevant_chunk_ids": ["C001053"], "notes": "Fine shift allocation issue", "difficulty": "hard"}
-{"query": "What happens when tool type is incorrect for shank selection in block", "relevant_chunk_ids": ["C001368"], "notes": "Shank selection error remedy", "difficulty": "easy"}
-{"query": "What remedy for impossible chamfer and radius of wheel edge alarms 61556 and 61557?", "relevant_chunk_ids": ["C001738"], "notes": "Wheel edge alarm remedy", "difficulty": "easy"}
-{"query": "What parameters to check for protection area in Channel and Block", "relevant_chunk_ids": ["C001606"], "notes": "Protection area parameters", "difficulty": "easy"}
-{"query": "What happens when 'Activation drive integrated ESR' option is not set and 'Extended stop and retract' is activated?", "relevant_chunk_ids": ["C000285"], "notes": "ESR option not set", "difficulty": "easy"}
-{"query": "What happens when tool monitoring fails during a cycle and how can I recover?", "relevant_chunk_ids": ["C001407"], "notes": "Tool monitoring error remedy", "difficulty": "hard"}
-{"query": "What are system reactions to SINUMERIK alarms", "relevant_chunk_ids": ["C000020"], "notes": "SINUMERIK alarm reactions", "difficulty": "easy"}
-{"query": "What remedy for Channel block dresser left and inclined grinding wheel alarm 61513?", "relevant_chunk_ids": ["C001714"], "notes": "Alarm 61513 remedy", "difficulty": "easy"}
-{"query": "What causes path velocity to exceed limits for auxiliary functions during movement?", "relevant_chunk_ids": ["C001261"], "notes": "Alarm 26052 remedy", "difficulty": "medium"}
+{"query": "What happens when spindle modulo axis declaration is missing in channel", "relevant_chunk_ids": ["C000082"], "notes": "Spindle modulo axis declaration", "difficulty": "easy"}
+{"query": "What causes the CNC lock function update to be rejected with cause 1, the clock not set?", "relevant_chunk_ids": ["C000180"], "notes": "CNC lock update rejection causes", "difficulty": "easy"}
+{"query": "Why does axis motion cancel when target position changes during jog operation", "relevant_chunk_ids": ["C000774"], "notes": "JOG position change issue", "difficulty": "hard"}
+{"query": "What is the remedy for nested spindle groups in one group plane?", "relevant_chunk_ids": ["C001135"], "notes": "Spindle groups nesting remedy", "difficulty": "easy"}
+{"query": "How do I internally store system configuration and program data for safekeeping?", "relevant_chunk_ids": ["C001753"], "notes": "Internal data backup procedure", "difficulty": "medium"}
+{"query": "What happens when counterspindle configuration is missing in a channel", "relevant_chunk_ids": ["C001252"], "notes": "Counterspindle setup error", "difficulty": "medium"}
+{"query": "What happens when the angle of wrap is too large in a channel", "relevant_chunk_ids": ["C001632"], "notes": "Wrap angle error remedy", "difficulty": "easy"}
+{"query": "What happens when parallel axes have invalid plane assignment in a block?", "relevant_chunk_ids": ["C000419"], "notes": "Illegal plane selection error", "difficulty": "medium"}
+{"query": "What happens when Z mirroring is missing in work offset for counterspindle", "relevant_chunk_ids": ["C001243"], "notes": "Z mirroring remedy", "difficulty": "easy"}
+{"query": "What happens when two-channel cutting is active in more than two channels at the same time", "relevant_chunk_ids": ["C001511"], "notes": "Two channel cutting error", "difficulty": "medium"}
+{"query": "How to resolve NCK alarm issues with fast I/O activation", "relevant_chunk_ids": ["C000087"], "notes": "Fast I/O remedy", "difficulty": "medium"}
+{"query": "How to select NC startup mode with cursor keys", "relevant_chunk_ids": ["C000014"], "notes": "NC startup mode selection", "difficulty": "easy"}
+{"query": "What causes the interpreter to stop when an axis exceeds the allowed number of interpolating axes?", "relevant_chunk_ids": ["C000170"], "notes": "Interpolation axis limit error", "difficulty": "medium"}
+{"query": "What happens when an invalid value is assigned to FXST in a block?", "relevant_chunk_ids": ["C000792"], "notes": "FXST invalid value range", "difficulty": "medium"}
+{"query": "What action resolves invalid block syntax errors in programmed addresses?", "relevant_chunk_ids": ["C000329"], "notes": "Block syntax error fix", "difficulty": "medium"}
+{"query": "What parameter to check for circular feed on 840D sl with SW 2.7 or later?", "relevant_chunk_ids": ["C001326"], "notes": "Circular feed parameter check", "difficulty": "easy"}
+{"query": "What happens when permissible measuring difference is exceeded in a channel block?", "relevant_chunk_ids": ["C001269"], "notes": "Permissible measuring difference error", "difficulty": "easy"}
+{"query": "Why can't I control an axis from the PLC when it's not in a neutral state?", "relevant_chunk_ids": ["C000970"], "notes": "Axis PLC control issue", "difficulty": "hard"}
+{"query": "What action resolves attribute restrictions in PROC instructions?", "relevant_chunk_ids": ["C000374"], "notes": "Invalid attribute remedy", "difficulty": "medium"}
+{"query": "What causes alarm 4152 for block display with absolute values configuration", "relevant_chunk_ids": ["C000075"], "notes": "Alarm 4152 remedy", "difficulty": "easy"}
+{"query": "What happens when oscillating controlled by synchronized actions with infeed motion in one NC block for channel and block assignment of OSCILL and POSP?", "relevant_chunk_ids": ["C000452"], "notes": "Oscill and POSP assignment", "difficulty": "easy"}
+{"query": "What errors occur when OEM transformation orientation axes are not defined?", "relevant_chunk_ids": ["C000105"], "notes": "OEM transformation errors", "difficulty": "easy"}
+{"query": "What happens when Block FZ is active but the number of teeth of the active D number of tool is zero?", "relevant_chunk_ids": ["C000293"], "notes": "Block FZ active error", "difficulty": "easy"}
+{"query": "Why is my digital input not being assigned to a slot?", "relevant_chunk_ids": ["C001682"], "notes": "Invalid base address", "difficulty": "hard"}
+{"query": "What actions resolve contour-related program interruptions?", "relevant_chunk_ids": ["C001603"], "notes": "Contour alarm remedy", "difficulty": "hard"}
+{"query": "What are the different types of alarms in SINUMERIK 808D ADVANCED?", "relevant_chunk_ids": ["C000006"], "notes": "SINUMERIK alarm types", "difficulty": "easy"}
+{"query": "What action resolves the grinding wheel configuration issue during part program execution?", "relevant_chunk_ids": ["C001401"], "notes": "Grinding wheel type error", "difficulty": "hard"}
+{"query": "What is the remedy for alarm 62001 Channel Block Dynamic response of axis inadequate", "relevant_chunk_ids": ["C001632"], "notes": "Alarm 62001 remedy", "difficulty": "easy"}
+{"query": "Why is production data being rejected during trace diagnostics", "relevant_chunk_ids": ["C000161"], "notes": "Data loss with trace", "difficulty": "hard"}
+{"query": "What is the remedy for alarm 62201 Channel Block Z offset issue", "relevant_chunk_ids": ["C001648"], "notes": "Alarm 62201 remedy", "difficulty": "easy"}
+{"query": "What happens when no free memory space is available for transformations on a channel?", "relevant_chunk_ids": ["C000109"], "notes": "Memory space for transformations", "difficulty": "easy"}
+{"query": "What causes contour preparation errors during part program execution?", "relevant_chunk_ids": ["C001459"], "notes": "Contour preparation error", "difficulty": "hard"}
+{"query": "What happens when self-cutting contour alarm 61932 occurs on a specific channel and block", "relevant_chunk_ids": ["C001605"], "notes": "Selfcutting contour alarm", "difficulty": "easy"}
+{"query": "What happens when the linear vector tolerance is exceeded in CYCLE996 or CYCLE9960?", "relevant_chunk_ids": ["C001657"], "notes": "Alarm 62317 remedy", "difficulty": "medium"}
+{"query": "What remedy for NCK alarms due to temporary excessive system load", "relevant_chunk_ids": ["C000542"], "notes": "NCK alarm remedy", "difficulty": "easy"}
+{"query": "What causes Channel block motion synchronous action wrong feed type error?", "relevant_chunk_ids": ["C000552"], "notes": "Motion sync action error", "difficulty": "easy"}
+{"query": "What causes an incorrect alarm in a measuring cycle on a specific channel?", "relevant_chunk_ids": ["C001303"], "notes": "Measuring cycle error", "difficulty": "medium"}
+{"query": "What is the reaction to alarm display", "relevant_chunk_ids": ["C000940"], "notes": "Alarm display reaction", "difficulty": "easy"}
+{"query": "What happens when $NT_CORR_ELEM_P chain element is not found?", "relevant_chunk_ids": ["C000104"], "notes": "Chain element not found errors", "difficulty": "easy"}
+{"query": "What action is taken when a label is missing from the pocket contour in a part program?", "relevant_chunk_ids": ["C001575"], "notes": "Label not found error", "difficulty": "medium"}
+{"query": "What causes the interpreter to stop when active radius setting is incorrect?", "relevant_chunk_ids": ["C001257"], "notes": "Radius setting mismatch fix", "difficulty": "medium"}
+{"query": "How to resolve issues by editing the program?", "relevant_chunk_ids": ["C000532"], "notes": "Program modification remedy", "difficulty": "medium"}
+{"query": "What causes error code when sum of active offsets does not equal zero in Channel block", "relevant_chunk_ids": ["C001373"], "notes": "Error 61426 remedy", "difficulty": "easy"}
+{"query": "What causes interpreter stop due to excessive contour elements in a channel?", "relevant_chunk_ids": ["C001606"], "notes": "Contour element limit exceeded", "difficulty": "medium"}
+{"query": "Why is SERUPRO not allowed for slave axis in channel", "relevant_chunk_ids": ["C000700"], "notes": "SERUPRO slave axis restriction", "difficulty": "easy"}
+{"query": "What to do when servo motor commissioning fails due to incorrect encoder configuration", "relevant_chunk_ids": ["C001748"], "notes": "Encoder motor config faults", "difficulty": "hard"}
+{"query": "What happens when no main spindle is selected for clamping for turning on a channel?", "relevant_chunk_ids": ["C001562"], "notes": "Turning main spindle selection", "difficulty": "easy"}
+{"query": "What does the 1st spindle not programmed error indicate for Channel %1 Block %2", "relevant_chunk_ids": ["C001039"], "notes": "Spindle programming error", "difficulty": "easy"}
+{"query": "What happens when infeed direction differs for new and continue profiling?", "relevant_chunk_ids": ["C001449"], "notes": "Infeed direction mismatch", "difficulty": "easy"}
+{"query": "Why does the system display an alarm after setting interface signals?", "relevant_chunk_ids": ["C000186"], "notes": "Interface alarm display", "difficulty": "hard"}
+{"query": "Why does the program stop when channels have different machining methods?", "relevant_chunk_ids": ["C001514"], "notes": "Technology mismatch remedy", "difficulty": "hard"}
+{"query": "What happens when tool diameters differ at 90 degrees?", "relevant_chunk_ids": ["C001242"], "notes": "Tool angle 90 degrees issue", "difficulty": "medium"}
+{"query": "What happens when an invalid value is entered for the machine date in a channel?", "relevant_chunk_ids": ["C000070"], "notes": "Invalid machine date value", "difficulty": "easy"}
+{"query": "What is the remedy for alarm 7500 block invalid protection level", "relevant_chunk_ids": ["C000165"], "notes": "Alarm 7500 remedy", "difficulty": "easy"}
+{"query": "What action can be taken when material does not move during machining?", "relevant_chunk_ids": ["C001123"], "notes": "Residual material remedy", "difficulty": "hard"}
+{"query": "What action is required when a channel's block references a non-existent tool?", "relevant_chunk_ids": ["C001306"], "notes": "Tool existence error fix", "difficulty": "medium"}
+{"query": "What happens when a D number is not assigned to a tool in ISO mode?", "relevant_chunk_ids": ["C000497"], "notes": "ISO mode D number error", "difficulty": "medium"}
+{"query": "What happens when an auxiliary function is improperly set up on a channel?", "relevant_chunk_ids": ["C000079"], "notes": "Illegal aux function config", "difficulty": "medium"}
+{"query": "What causes interpreter stop due to missing multi-channel data", "relevant_chunk_ids": ["C001038"], "notes": "Multi-channel data error", "difficulty": "medium"}
+{"query": "How to assign parameters for main spindle chuck in spindle chuck data", "relevant_chunk_ids": ["C001171"], "notes": "Spindle chuck parameter assignment", "difficulty": "easy"}
+{"query": "What remedy for NCK alarm 12554 block replacement cycle missing?", "relevant_chunk_ids": ["C000386"], "notes": "Alarm 12554 remedy", "difficulty": "easy"}
+{"query": "What happens when an axis stops due to a specific function being terminated?", "relevant_chunk_ids": ["C000841"], "notes": "Axis function cancellation", "difficulty": "hard"}
+{"query": "What happens when aligning a turning tool with multiple active tools in Channel %1 Block %2?", "relevant_chunk_ids": ["C001158"], "notes": "Aligning turning tools", "difficulty": "easy"}
+{"query": "What causes block direction reversal with WAB infeed motion alarms on the NCK system", "relevant_chunk_ids": ["C000248"], "notes": "NCK alarm 10741 remedy", "difficulty": "medium"}
+{"query": "What happens when there is incorrect parameterization of NUM or INDA in a channel's block?", "relevant_chunk_ids": ["C001069"], "notes": "Alarm 61106 remedy", "difficulty": "easy"}
+{"query": "What happens when block search fails to operate without calculation in ShopMill and ShopTurn?", "relevant_chunk_ids": ["C001571"], "notes": "Block search calculation mode", "difficulty": "medium"}
+{"query": "What happens when axis functions are simultaneously active for one axis with specified machine data?", "relevant_chunk_ids": ["C000093"], "notes": "Axis function conflict", "difficulty": "easy"}
+{"query": "What is the minimum log file size for logging measurement results", "relevant_chunk_ids": ["C001365"], "notes": "Log file size requirement", "difficulty": "medium"}
+{"query": "What remedy for axis configuration error in compensation table?", "relevant_chunk_ids": ["C000843"], "notes": "Compensation table error fix", "difficulty": "easy"}
+{"query": "What remedy for axis coordinate system-specific working area limit violation?", "relevant_chunk_ids": ["C000834"], "notes": "Axis limit violation remedy", "difficulty": "easy"}
+{"query": "How to update software for specific channel block", "relevant_chunk_ids": ["C001305"], "notes": "NCK software upgrade", "difficulty": "medium"}
+{"query": "What does Block number parameter represent in Channel number transformation error 61147", "relevant_chunk_ids": ["C001110"], "notes": "Transformation error 61147", "difficulty": "easy"}
+{"query": "How to recover from program interruption due to alarm", "relevant_chunk_ids": ["C000532"], "notes": "Alarm reset procedure", "difficulty": "hard"}
+{"query": "What happens when axis coordinates are within protection area on Channel %1 Block %2", "relevant_chunk_ids": ["C001542"], "notes": "Axis protection area error", "difficulty": "easy"}
+{"query": "What causes incorrect array size for CONTPRON parameters?", "relevant_chunk_ids": ["C000618"], "notes": "Contpro/Contdcon array error", "difficulty": "medium"}
+{"query": "Why does the system stop when tailstock and counterspindle are not synchronized?", "relevant_chunk_ids": ["C001563"], "notes": "Tailstock selection conflict", "difficulty": "hard"}
+{"query": "What is the remedy for too many directories in NC memory?", "relevant_chunk_ids": ["C000149"], "notes": "NC memory directory limit", "difficulty": "easy"}
+{"query": "What remedy for NCK alarms involves modifying part program with tool radius compensation?", "relevant_chunk_ids": ["C000254"], "notes": "NCK alarm remedy", "difficulty": "easy"}
+{"query": "What to do when part program stops due to missing contour data?", "relevant_chunk_ids": ["C000532"], "notes": "Missing contour data remedy", "difficulty": "hard"}
+{"query": "What happens when the angle relative to the reference edge is zero in a channel", "relevant_chunk_ids": ["C001311"], "notes": "Interpreter stop condition", "difficulty": "medium"}
+{"query": "Why does the axis fail to slow down during reference point approach and trigger an alarm?", "relevant_chunk_ids": ["C000807"], "notes": "Reference point approach failure", "difficulty": "hard"}
+{"query": "Why is changing access rights for system variables with REDEF not allowed in GUD files?", "relevant_chunk_ids": ["C000336"], "notes": "Redef access rights error", "difficulty": "easy"}
+{"query": "Why does the machine stop after requesting a combined movement on an axis?", "relevant_chunk_ids": ["C000877"], "notes": "Overlaid motion error", "difficulty": "hard"}
+{"query": "Why does the axis stop moving during a threading operation", "relevant_chunk_ids": ["C000209"], "notes": "Thread pitch decrease issue", "difficulty": "hard"}
+{"query": "How to clear NCK alarm and continue program?", "relevant_chunk_ids": ["C000202"], "notes": "NCK alarm clearance", "difficulty": "easy"}
+{"query": "What happens when a program contains new machining steps from a higher ShopMill version?", "relevant_chunk_ids": ["C001222"], "notes": "Higher ShopMill version alarm", "difficulty": "easy"}
+{"query": "What causes the interpreter to stop when the spindle direction is incorrectly programmed?", "relevant_chunk_ids": ["C001532"], "notes": "Spindle direction alarm", "difficulty": "medium"}
+{"query": "What is the meaning of NCK in Numerical Control Kernel context", "relevant_chunk_ids": ["C001761"], "notes": "Numerical Control Kernel", "difficulty": "easy"}
+{"query": "What action is required when a dresser reaches its wear limit length", "relevant_chunk_ids": ["C001426"], "notes": "Dresser wear limit remedy", "difficulty": "medium"}
+{"query": "What conditions allow changing the protection level of a block's access permission?", "relevant_chunk_ids": ["C000375"], "notes": "Block access permission levels", "difficulty": "medium"}
+{"query": "What operators are permissible for logic operations of real-time variables in motion synchronous actions?", "relevant_chunk_ids": ["C000400"], "notes": "Motion sync action operators", "difficulty": "easy"}
+{"query": "Why can't I perform precise positioning within a specific block of code?", "relevant_chunk_ids": ["C000795"], "notes": "Fine shift allocation issue", "difficulty": "hard"}
+{"query": "What happens when tool type is incorrect for shank selection in block", "relevant_chunk_ids": ["C001060"], "notes": "Shank selection error remedy", "difficulty": "easy"}
+{"query": "What remedy for impossible chamfer and radius of wheel edge alarms 61556 and 61557?", "relevant_chunk_ids": ["C001434", "C001435"], "notes": "Wheel edge alarm remedy", "difficulty": "easy"}
+{"query": "What parameters to check for protection area in Channel and Block", "relevant_chunk_ids": ["C001297"], "notes": "Protection area parameters", "difficulty": "easy"}
+{"query": "What happens when 'Activation drive integrated ESR' option is not set and 'Extended stop and retract' is activated?", "relevant_chunk_ids": ["C000176"], "notes": "ESR option not set", "difficulty": "easy"}
+{"query": "What happens when tool monitoring fails during a cycle and how can I recover?", "relevant_chunk_ids": ["C001102"], "notes": "Tool monitoring error remedy", "difficulty": "hard"}
+{"query": "What are system reactions to SINUMERIK alarms", "relevant_chunk_ids": ["C000006"], "notes": "SINUMERIK alarm reactions", "difficulty": "easy"}
+{"query": "What remedy for Channel block dresser left and inclined grinding wheel alarm 61513?", "relevant_chunk_ids": ["C001400"], "notes": "Alarm 61513 remedy", "difficulty": "easy"}
+{"query": "What causes path velocity to exceed limits for auxiliary functions during movement?", "relevant_chunk_ids": ["C000966"], "notes": "Alarm 26052 remedy", "difficulty": "medium"}

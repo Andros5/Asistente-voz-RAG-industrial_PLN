@@ -21,7 +21,7 @@ La PoC usa un unico entorno Python. BGE se carga directamente con `AutoTokenizer
 
 ```text
 rag_system/
-  chunking.py        # Contiene dos estrategias de chunking: por palabras y por caracteres con solapamiento
+  chunking.py        # Chunking por palabras y Strategy 2 por alarmas/campos
   embeddings.py      # Embeddings BGE con AutoTokenizer/AutoModel
   weaviate_store.py  # Coleccion, insercion y busquedas BM25/vector
   retriever.py       # BM25, vector e hibrido RRF
@@ -115,6 +115,8 @@ python -m scripts.build_index --markdown ./data/manuals/808D_ADV_diagnostics_man
 
 La indexacion genera chunks, calcula embeddings BGE y guarda todo en Weaviate. Hay que repetirla si cambia el Markdown, el chunking o el modelo de embeddings.
 
+La indexacion no crea el JSONL de `data/processed`; para eso se usa `scripts.export_chunks`.
+
 ## Probar solo T3
 
 ```bash
@@ -124,7 +126,7 @@ python -m scripts.query_rag "What is the remedy for alarm 26120?" --mode hybrid 
 La salida queda lista para T4a:
 
 ```text
-[REF:1] internal_id=C001282; source=...; section=26120 ...
+[REF:1] internal_id=C000985; source=...; section=26120 ...
 texto del chunk...
 ```
 
@@ -171,8 +173,17 @@ python -m scripts.parse_with_llamacloud --pdf ./RAG-docs/808D_ADV_diagnostics_ma
 ## Evaluacion de T3
 
 ```bash
-python -m scripts.export_chunks --markdown ./data/manuals/808D_ADV_diagnostics_man_0718_en-US.md --output ./data/processed/chunks_default_220w_40o.jsonl
-python -m scripts.evaluate_retrieval --dataset eval_queries.jsonl --modes bm25,hybrid --top-k 5
+python -m scripts.export_chunks --markdown ./data/manuals/808D_ADV_diagnostics_man_0718_en-US.md --output ./data/processed/chunks_strategy2_2500c_150o.jsonl
+python -m scripts.evaluate_retrieval --dataset ./data/eval/eval_queries.jsonl --modes bm25,hybrid --top-k 5
 ```
 
 El script reporta `Recall@k`, `Hit@k`, `MRR`, `MAP` y latencia media.
+
+## Generacion de queries de evaluacion
+
+```bash
+export GROQ_API_KEY="gsk-..."
+python -m scripts.generate_rag_eval
+```
+
+El generador lee `data/processed/chunks_strategy2_2500c_150o.jsonl` y escribe `data/eval/eval_queries.jsonl`. No lee Weaviate. Si el archivo de salida ya existe, continua desde los ejemplos existentes; para regenerar desde cero hay que borrarlo o renombrarlo antes.
