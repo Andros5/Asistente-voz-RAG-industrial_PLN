@@ -81,6 +81,9 @@ Los chunks base estan en:
 
 - `data/processed/chunks_strategy2_2500c_150o.jsonl`
 
+La estrategia que genera ese archivo y el analisis de alternativas estan
+documentados en `docs/CHUNKING.md`.
+
 Si se cambia el chunking, hay que regenerar ese archivo o crear uno nuevo con nombre explicito, y actualizar los `relevant_chunk_ids` del dataset.
 
 ## Generacion de queries

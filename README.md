@@ -19,6 +19,7 @@ docs/
   Proyecto_Longitudinal_PLN.pdf
   CHUNKING.md
   EVALUATION.md
+  assets/        Figuras de apoyo para la documentacion
 rag_system/      Chunking, embeddings BGE, Weaviate, retrieval y metricas
 llm_system/      Carga local de Ministral 3
 poc_system/      Orquestacion T2a -> T2b -> T3 -> T4a -> T4b
@@ -216,7 +217,7 @@ Los tests no cargan el LLM ni Weaviate. Comprueban chunking, metricas y consiste
 
 ## Documentacion
 
-- `docs/Proyecto_Longitudinal_PLN.pdf`: memoria base del trabajo.
-- `docs/CHUNKING.md`: funcionamiento actual y puntos de extension del chunking.
+- `docs/Proyecto_Longitudinal_PLN.pdf`: memoria final de la entrega.
+- `docs/CHUNKING.md`: analisis de estrategias, funcionamiento actual y puntos de extension del chunking.
 - `docs/EVALUATION.md`: formato del dataset y uso de metricas.
 - `data/eval/DATASET_CARD.md`: origen, formato, generacion y limitaciones del dataset de evaluacion.

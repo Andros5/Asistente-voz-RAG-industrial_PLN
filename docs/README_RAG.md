@@ -1,6 +1,6 @@
 # PoC completa T2 -> T3 -> T4
 
-Implementacion de la prueba de concepto descrita en la memoria del proyecto incluida en `docs/Proyecto_Longitudinal_PLN.pdf`.
+Implementacion de la prueba de concepto descrita en la memoria final del proyecto incluida en `docs/Proyecto_Longitudinal_PLN.pdf`.
 La entrada principal es `scripts.run_poc` y ejecuta el ciclo completo:
 
 ```text
@@ -46,6 +46,10 @@ scripts/
   export_chunks.py
 integration/
   poc_loop_t2_t3_t4.py
+docs/
+  CHUNKING.md        # Analisis de estrategias y chunking activo
+  EVALUATION.md      # Dataset, metricas y reportes
+  assets/chunking/   # Figuras del analisis de chunking
 ```
 
 ## Requisitos
@@ -186,12 +190,13 @@ python -m scripts.parse_with_llamacloud --pdf ./RAG-docs/808D_ADV_diagnostics_ma
 ## Evaluacion de T3
 
 ```bash
-python -m scripts.export_chunks --markdown ./data/manuals/808D_ADV_diagnostics_man_0718_en-US.md --output ./data/processed/chunks_strategy2_2500c_150o.jsonl
 python -m scripts.build_index --chunks ./data/processed/chunks_strategy2_2500c_150o.jsonl
 python -m scripts.evaluate_retrieval --dataset ./data/eval/eval_queries.jsonl --modes bm25,hybrid --top-k 5
 ```
 
 El script reporta por consola `Recall@k`, `Hit@k`, `MRR`, `MAP`, latencia media y numero de fallos. Tambien guarda por defecto un reporte JSON auditable en `data/eval/reports/`.
+
+El paso de `export_chunks` solo es necesario si se cambia la estrategia de chunking. Para reproducir la entrega, la indexacion debe hacerse desde el JSONL versionado `data/processed/chunks_strategy2_2500c_150o.jsonl`.
 
 Para fijar una ruta concreta:
 
