@@ -22,10 +22,13 @@ Formato JSONL:
 Dataset incluido:
 
 - `data/eval/eval_queries.jsonl`
+- `data/eval/DATASET_CARD.md`
 
 Este dataset es pequeno y sirve como comprobacion reproducible del cableado. Para resultados defendibles en memoria, conviene ampliarlo con mas consultas y varios chunks relevantes cuando proceda.
 
 Los `relevant_chunk_ids` deben pertenecer al archivo de chunks exportado con la misma estrategia de chunking. Si se cambia el chunking, los IDs pueden cambiar y el dataset debe regenerarse o realinearse.
+
+El campo `notes` es una nota breve para auditoria humana. No participa en el calculo de metricas.
 
 ## Comando
 
@@ -59,7 +62,7 @@ Implementadas en `rag_system/metrics.py`:
 - `Hit@k`
 - `MRR`
 - `MAP`
-- Latencia media por consulta
+- Latencia media/p95 por consulta de recuperacion T3
 
 ## Reporte de auditoria
 
@@ -101,4 +104,37 @@ python -m scripts.generate_rag_eval
 El script no lee Weaviate. Lee el JSONL de chunks, selecciona chunks sin repetir y pide a Groq una pregunta, una nota y una dificultad. Cada ejemplo queda vinculado al `chunk_id` del chunk de origen.
 
 Si `data/eval/eval_queries.jsonl` ya existe, el script continua desde ahi. Para regenerar desde cero, hay que borrar o renombrar ese archivo antes de ejecutar el script.
+
+## Latencia del ciclo completo T2 -> T4
+
+La evaluacion de recuperacion anterior mide solo T3. Para medir tiempos del flujo completo se usa:
+
+```bash
+python -m scripts.evaluate_poc_latency --query "Error 26120 en el eje, que hago ahora?" --mode hybrid --top-k 5 --local-files-only
+```
+
+Tambien puede recibir un TXT o JSONL con consultas en espanol:
+
+```bash
+python -m scripts.evaluate_poc_latency --queries-file ./data/eval/poc_latency_queries.jsonl --mode hybrid --top-k 5 --local-files-only --output ./data/eval/reports/poc_latency_last.json
+```
+
+El reporte incluye:
+
+- `initial_load_s`: tiempo de carga inicial del LLM, medido aparte.
+- `t2a_s`: normalizacion en espanol.
+- `t2b_s`: traduccion al ingles.
+- `t3_s`: recuperacion RAG completa.
+- `t3_embedding_s`: embedding de la query.
+- `t3_retrieval_s`: busqueda/fusion una vez disponible el embedding.
+- `t3_bm25_s`, `t3_vector_s`, `t3_fusion_s`: desglose interno de T3.
+- `t4a_s`: generacion tecnica en ingles.
+- `t4b_s`: traduccion/adaptacion final al espanol.
+- `total_s`: tiempo total de consulta, sin incluir la carga inicial del LLM.
+
+Para una unica consulta tambien puede usarse `scripts.run_poc`:
+
+```bash
+python -m scripts.run_poc --query "Error 26120 en el eje, que hago ahora?" --mode hybrid --top-k 5 --local-files-only --show-timings
+```
 

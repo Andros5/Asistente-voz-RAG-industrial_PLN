@@ -14,7 +14,7 @@ consulta oral ES -> T2a normalizacion ES -> T2b traduccion EN -> T3 RAG -> T4a r
 data/
   manuals/       Markdown fuente parseado del manual
   processed/     Chunks exportados con la configuracion base
-  eval/          Dataset JSONL pequeno para evaluar recuperacion
+  eval/          Dataset JSONL, dataset card y reportes de evaluacion
 docs/
   Proyecto_Longitudinal_PLN.pdf
   CHUNKING.md
@@ -118,6 +118,20 @@ python -m scripts.run_poc --query "Error 26120 en el eje, que hago ahora?" --mod
 
 El comando imprime las salidas intermedias de T2a, T2b, T3, T4a y T4b.
 
+Para imprimir latencias por fase en una consulta:
+
+```bash
+python -m scripts.run_poc --query "Error 26120 en el eje, que hago ahora?" --mode hybrid --top-k 5 --local-files-only --show-timings
+```
+
+Para guardar un JSON auditable de una consulta:
+
+```bash
+python -m scripts.run_poc --query "Error 26120 en el eje, que hago ahora?" --mode hybrid --top-k 5 --local-files-only --timings-output ./data/eval/reports/poc_latency_single.json
+```
+
+El total de consulta no incluye la carga inicial del LLM. Esa carga se guarda aparte como `load_s`, porque el modelo se carga una vez y luego se reutiliza.
+
 ## Evaluacion de recuperacion
 
 El repositorio incluye un dataset de evaluacion para T3 alineado con los chunks de Strategy 2:
@@ -126,7 +140,7 @@ El repositorio incluye un dataset de evaluacion para T3 alineado con los chunks 
 python -m scripts.evaluate_retrieval --dataset ./data/eval/eval_queries.jsonl --modes bm25,vector,hybrid --top-k 5
 ```
 
-Metricas implementadas: `Recall@k`, `Hit@k`, `MRR`, `MAP` y latencia media. La evaluacion automatica cubre T3; la calidad completa T2 -> T4 se revisa funcionalmente.
+Metricas implementadas: `Recall@k`, `Hit@k`, `MRR`, `MAP` y latencia media/p95 de recuperacion. La evaluacion automatica cubre T3; la calidad completa T2 -> T4 se revisa funcionalmente.
 
 Ademas del resumen por consola, el evaluador guarda por defecto un JSON auditable en `data/eval/reports/`. Ese reporte incluye cada pregunta, dificultad, notas, chunks relevantes, ranking recuperado por modo, fallos, exitos parciales, posicion del primer chunk relevante y resumen por dificultad.
 
@@ -135,6 +149,28 @@ Para elegir ruta:
 ```bash
 python -m scripts.evaluate_retrieval --dataset ./data/eval/eval_queries.jsonl --modes bm25,vector,hybrid --top-k 5 --audit-output ./data/eval/reports/last_eval.json
 ```
+
+La ficha del dataset esta en:
+
+```text
+data/eval/DATASET_CARD.md
+```
+
+## Auditoria de latencia T2 -> T4
+
+Para medir tiempos del flujo completo en varias consultas:
+
+```bash
+python -m scripts.evaluate_poc_latency --query "Error 26120 en el eje, que hago ahora?" --query "Me sale la alarma 380072, que reviso?" --mode hybrid --top-k 5 --local-files-only
+```
+
+Tambien puede usarse un TXT o JSONL con una consulta por linea:
+
+```bash
+python -m scripts.evaluate_poc_latency --queries-file ./data/eval/poc_latency_queries.jsonl --mode hybrid --top-k 5 --local-files-only --output ./data/eval/reports/poc_latency_last.json
+```
+
+El reporte mide por separado `T2a`, `T2b`, `T3`, `T4a`, `T4b` y el total de consulta. Dentro de T3 separa `embedding_s`, `retrieval_s`, `bm25_s`, `vector_s` y `fusion_s`.
 
 ## Exportar chunks
 
@@ -183,3 +219,4 @@ Los tests no cargan el LLM ni Weaviate. Comprueban chunking, metricas y consiste
 - `docs/Proyecto_Longitudinal_PLN.pdf`: memoria base del trabajo.
 - `docs/CHUNKING.md`: funcionamiento actual y puntos de extension del chunking.
 - `docs/EVALUATION.md`: formato del dataset y uso de metricas.
+- `data/eval/DATASET_CARD.md`: origen, formato, generacion y limitaciones del dataset de evaluacion.

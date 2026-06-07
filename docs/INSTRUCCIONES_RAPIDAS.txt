@@ -32,5 +32,13 @@ PoC PLN - uso rapido
 
    python -m scripts.run_poc --query "Error 26120 en el eje, que hago ahora?" --mode hybrid --top-k 5 --stream-final --local-files-only
 
+9. Para ver latencias por fase en una consulta:
+
+   python -m scripts.run_poc --query "Error 26120 en el eje, que hago ahora?" --mode hybrid --top-k 5 --local-files-only --show-timings
+
+10. Para auditar latencias T2 -> T4 en una o varias consultas:
+
+   python -m scripts.evaluate_poc_latency --query "Error 26120 en el eje, que hago ahora?" --mode hybrid --top-k 5 --local-files-only
+
 Si tu cache de Hugging Face esta en otra ruta, define HF_HOME antes.
 El README_RAG.md tiene la explicacion completa.

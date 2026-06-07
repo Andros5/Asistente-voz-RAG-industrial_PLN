@@ -69,3 +69,29 @@ class RetrievedChunk:
     @property
     def chunk_id(self) -> str:
         return self.chunk.chunk_id
+
+
+@dataclass
+class RetrievalTiming:
+    mode: str
+    top_k: int
+    total_s: float = 0.0
+    embedding_s: float = 0.0
+    retrieval_s: float = 0.0
+    bm25_s: float = 0.0
+    vector_s: float = 0.0
+    fusion_s: float = 0.0
+    candidate_limit: int | None = None
+
+    def as_dict(self) -> dict[str, Any]:
+        return {
+            "mode": self.mode,
+            "top_k": self.top_k,
+            "total_s": self.total_s,
+            "embedding_s": self.embedding_s,
+            "retrieval_s": self.retrieval_s,
+            "bm25_s": self.bm25_s,
+            "vector_s": self.vector_s,
+            "fusion_s": self.fusion_s,
+            "candidate_limit": self.candidate_limit,
+        }

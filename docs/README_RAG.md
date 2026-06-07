@@ -1,6 +1,6 @@
 # PoC completa T2 -> T3 -> T4
 
-Implementacion de la prueba de concepto descrita en `Proyecto_Longitudinal_PLN_entrega2.pdf`.
+Implementacion de la prueba de concepto descrita en la memoria del proyecto incluida en `docs/Proyecto_Longitudinal_PLN.pdf`.
 La entrada principal es `scripts.run_poc` y ejecuta el ciclo completo:
 
 ```text
@@ -40,6 +40,7 @@ scripts/
   query_rag.py
   run_poc.py
   evaluate_retrieval.py
+  evaluate_poc_latency.py
   download_models.py
   generate_rag_eval.py
   export_chunks.py
@@ -152,6 +153,18 @@ El comando imprime cada subtarea:
 [T4b] respuesta final en espanol
 ```
 
+Para imprimir tiempos por fase en una consulta:
+
+```bash
+python -m scripts.run_poc --query "Error 26120 en el eje, que hago ahora?" --mode hybrid --top-k 5 --local-files-only --show-timings
+```
+
+Para guardar un JSON auditable de la consulta:
+
+```bash
+python -m scripts.run_poc --query "Error 26120 en el eje, que hago ahora?" --mode hybrid --top-k 5 --local-files-only --timings-output ./data/eval/reports/poc_latency_single.json
+```
+
 ## Bucle interactivo
 
 ```bash
@@ -187,6 +200,24 @@ python -m scripts.evaluate_retrieval --dataset ./data/eval/eval_queries.jsonl --
 ```
 
 El reporte contiene cada pregunta con dificultad, notas, chunks relevantes, ranking recuperado por modo, scores/ranks, fallos, exitos parciales, posicion del primer relevante, metricas individuales y resumen por dificultad.
+
+La ficha del dataset esta en `data/eval/DATASET_CARD.md`.
+
+## Auditoria de latencia T2 -> T4
+
+La evaluacion de T3 mide recuperacion. Para medir el ciclo completo con LLM:
+
+```bash
+python -m scripts.evaluate_poc_latency --query "Error 26120 en el eje, que hago ahora?" --mode hybrid --top-k 5 --local-files-only
+```
+
+Para varias consultas, usa un TXT o JSONL con `query_es`:
+
+```bash
+python -m scripts.evaluate_poc_latency --queries-file ./data/eval/poc_latency_queries.jsonl --mode hybrid --top-k 5 --local-files-only --output ./data/eval/reports/poc_latency_last.json
+```
+
+El reporte separa `T2a`, `T2b`, `T3`, `T4a`, `T4b` y `total_s`. Dentro de T3 separa el tiempo de embedding de query (`t3_embedding_s`) y la recuperacion/fusion posterior (`t3_retrieval_s`, `t3_bm25_s`, `t3_vector_s`, `t3_fusion_s`). La carga inicial del LLM se mide aparte como `initial_load_s` o `load_s`.
 
 ## Generacion de queries de evaluacion
 
