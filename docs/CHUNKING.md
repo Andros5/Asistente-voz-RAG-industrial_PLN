@@ -81,23 +81,21 @@ RAG_CHUNK_MAX_CHARS=2500
 RAG_CHUNK_OVERLAP_CHARS=150
 ```
 
-El flujo interno es:
+### Paso 1 — Alarm-based split
 
-1. Leer el Markdown del manual.
-2. Detectar limites de alarma mediante expresiones regulares sobre encabezados
-   numericos y numeros en negrita.
-3. Separar cada alarma como unidad documental.
-4. Si una alarma supera el limite de caracteres, subdividir por campos
-   tecnicos: `Parameters`, `Explanation`, `Reaction`, `Remedy` y
-   `Programm continuation`.
-5. Si un campo sigue siendo demasiado grande, aplicar split recursivo por
-   parrafo, linea y palabra.
-6. Inyectar el encabezado de alarma en los subchunks de continuacion.
-7. Devolver objetos `DocumentChunk` con `chunk_id`, texto, seccion, lineas,
-   `word_count` y `content_sha256`.
+Se divide el documento completo usando una expresión regular con **lookahead** sobre los tres formatos de encabezado de alarma.
 
-El prefijo de continuacion permite que un subchunk recuperado de forma aislada
-mantenga el codigo de alarma:
+El lookahead garantiza que el delimitador queda dentro del chunk (no se pierde el encabezado de la alarma). Resultado: **1,649 chunks**, de los cuales **26 (1.6%) superan los 2,500 caracteres**.
+
+### Paso 2 — Subdivisión recursiva de chunks grandes (> 2,500 chars)
+
+Para los 26 chunks que superan el umbral se aplica una subdivisión distinta según si el chunk tiene o no estructura de alarma.
+
+**Chunks con estructura de alarma:**
+
+1. Se intenta dividir primero en los **límites de campo** semánticos de la alarma (`**Explanation:**`, `**Reaction:**`, `**Remedy:**`, `**Programm continuation:**`), que son las fronteras más naturales dentro de una entrada.
+2. Si algún campo sigue siendo demasiado grande, se aplica un **splitter recursivo en cascada** con prioridad decreciente de separadores: párrafo (`\n\n`) → línea (`\n`) → palabra (` `).
+3. **Preservación del contexto:** cada sub-chunk de continuación recibe el encabezado de la alarma original inyectado como prefijo, más los últimos 150 caracteres del sub-chunk anterior como solapamiento. Esto garantiza que un sub-chunk recuperado de forma aislada siempre identifica a qué alarma pertenece:
 
 ```text
 ## 25000 Axis %1 hardware fault of active encoder [cont. 1/2]
@@ -106,6 +104,9 @@ mantenga el codigo de alarma:
 
 **Remedy:** ...
 ```
+
+**Chunks sin estructura de alarma** (prefacio, introducciones de capítulo): se aplica directamente el splitter recursivo en cascada sin inyección de cabecera.
+
 
 ## JSONL canonico
 
@@ -124,17 +125,18 @@ Estadisticas del JSONL canonico:
 | Metrica | Valor |
 |---|---:|
 | Numero de chunks | 1,762 |
-| Media de caracteres | 774.4 |
-| Mediana de caracteres | 581.5 |
+| Media de caracteres | 774 |
+| Mediana de caracteres | 582 |
 | Minimo de caracteres | 102 |
 | Maximo de caracteres | 2,785 |
-| P95 de caracteres | 2,349 |
+| P5 de caracteres | 267 |
+| P95 de caracteres | 2,352 |
 | Chunks > 2,500 caracteres | 44 |
-| Media de palabras | 115.7 |
+| Media de palabras | 116 |
 | Mediana de palabras | 89 |
 
-Los pocos chunks que superan ligeramente el limite lo hacen por la inyeccion de
-cabecera y solapamiento, o por lineas tecnicas sin separadores naturales.
+Los 44 chunks que superan ligeramente el limite lo hacen por la inyeccion de
+cabecera y solapamiento, o por lineas individuales sin separadores naturales.
 
 ![Distribucion final de chunks](assets/chunking/chunk_final_analysis.png)
 
